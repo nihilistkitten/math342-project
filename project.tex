@@ -7,7 +7,7 @@ numbersections: true
 
 % TODO
 
-\begin{thm}\label{functors-preserve-isomorphism}
+\begin{thm}\label{functors preserve isomorphism}
 	Let $F: C\rightarrow D$ be a functor, and $f: X\rightarrow Y$ a isomorphism in $C$. Then $F(f)$ is an isomorphism between $F(X)$ and $F(Y)$ in $D$.
 \end{thm}
 
@@ -30,9 +30,9 @@ Before defining the fundamental groupoid, there is a nice geometric picture to
 tell about the fundamental group. Fix a topological space $X$ and a point
 $x_0$. Draw a representative of each of the non-identity homotopy classes of
 loops at $x_0$, and note that each arrow is double-sided, since paths can be
-traversed in either direction. When you "erase" the information of the
+traversed in either direction. When you "erase" the other information of the
 underlying space, you get a single point and a bunch of double-headed arrows:
-exactly the "objects-and-arrows" picture of a group!
+exactly the "categories-as-dots-and-arrows" picture of a group!
 
 \begin{figure}[H]
 	\centering
@@ -41,7 +41,9 @@ exactly the "objects-and-arrows" picture of a group!
 	\label{fig:group}
 \end{figure}
 
-% TODO: how does this motivate the groupoid
+We'll keep returning to this intuition of homotopy groups "erasing" some of
+the underlying geometry of the space. More immediately, however, this view
+motivates % TODO: explain how
 
 \begin{dfn}[Fundamental Groupoid]
 	The \textit{fundamental groupoid} $\Pi_1(X)$ of a space $X$ is the category whose
@@ -65,7 +67,7 @@ free homotopic, meaning without restricting to path homotopy we could not even
 write down the domain and codomain of our morphisms.
 
 \begin{ex}
-	We can immediately compute a few examples of fundamental groupoids.
+	We can immediately compute a few fundamental groupoids.
 	\begin{itemize}
 		\item The fundamental groupoid of a convex space is a \emph{tree groupoid},
 		      i.e. a groupoid with precisely one morphism between any two objects.
@@ -79,7 +81,7 @@ write down the domain and codomain of our morphisms.
 	\end{itemize}
 \end{ex}
 
-\begin{prop}\label{fund-is-groupoid}
+\begin{prop}\label{fundamental groupoid is a groupoid}
 	The fundamental groupoid is a groupoid.
 \end{prop}
 
@@ -104,9 +106,11 @@ via composition. Accordingly, we define
 	[\gamma]                  & \mapsto [f\circ\gamma].
 \end{align*}
 
+% TODO: picture
+
 This mapping is well-defined because composition preserves homotopy equivalence.
 
-\begin{prop}\label{fund-is-functor}
+\begin{prop}\label{fundamental groupoid is a functor}
 	$\Pi_1$ is a functor.
 \end{prop}
 
@@ -114,8 +118,8 @@ This mapping is well-defined because composition preserves homotopy equivalence.
 	Again, much of this work was done in class.
 	\begin{itemize}
 		\item $\Pi_1$ respects composition, since composition is associative.
-		\item $\Pi_1$ respects the identity, since composing with the identity is
-		      an identity up to homotopy. \qedhere
+		\item $\Pi_1$ respects the identity, since composition by the identity
+		      fixes homotopy classes. \qedhere
 	\end{itemize}
 \end{proof}
 
@@ -124,10 +128,21 @@ functor out of based spaces for the definition to make sense. This is a first
 hint that the fundamental groupoid in some sense captures more of the structure
 of a space than the fundamental group does.
 
-\begin{cor}\label{fund-is-topological}
-	The fundamental groupoid is a topological invariant.
+\begin{cor}\label{fundamental groupoid is topological}
+	The fundamental groupoid is a topological invariant. More precisely, if $X\cong Y$, then $\Pi_1(X)\cong \Pi_1(Y)$.
 \end{cor}
 
 \begin{proof}
-	This follows from \Cref{functors-preserve-isomorphism} and \Cref{fund-is-functor}.
+	This follows from \Cref{functors preserve isomorphism} and \Cref{fundamental groupoid is a functor}.
 \end{proof}
+
+\begin{thm}\label{fundamental groupoid is homotopy invariant}
+	The fundamental groupoid is a homotopy invariant. More precisely, if $X\simeq Y$, then $\Pi_1(X)\cong \Pi_1(Y)$.
+\end{thm}
+
+This theorem is harder than topological invariance, because it tells us something specific about the functor $\Pi_1$.
+
+\begin{proof}
+
+\end{proof}
+
