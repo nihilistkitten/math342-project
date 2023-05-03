@@ -1,32 +1,245 @@
----
-title: Higher Homotopy Groupoids
-numbersections: true
----
+% !TEX TS-program = lualatex
+\documentclass[11 pt]{amsart}
 
-\section{Preliminaries: Categories}
+\usepackage[margin=1.3in]{geometry}
 
-\subsection{Basics}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amsxtra}
+\usepackage{bbm}
+\usepackage[all,2cell]{xy}
+\usepackage{verbatim}
+\usepackage{color}
+\usepackage{float}
+\usepackage{tikz-cd}
+\usepackage{multicol}
+\usepackage{quiver}
+\usepackage{csquotes}
+\usepackage[unicode=true, pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,
+ breaklinks=false,
+ backref=false,
+ colorlinks=true,
+ linkcolor=blue,
+ citecolor=blue,
+ urlcolor=blue,
+ final
+]{hyperref}
 
-\begin{dfn}[Category]
-	A \emph{category} $\cC$ consists of a collection of \emph{objects} $\Obj(\cC)$
-	and a collection of \emph{morphisms} $\Hom(\cC)$, such that
+
+\usepackage{bookmark}
+
+
+\usepackage[capitalise]{cleveref}
+\newcommand{\fref}{\cref}
+\newcommand{\Fref}{\Cref}
+\newcommand{\prettyref}{\cref}
+\newcommand{\newrefformat}[2]{}
+
+
+
+\theoremstyle{plain}   % This is the default, anyway
+\newtheorem{thm}{Theorem}[section] % numbered theorem
+\makeatletter\let\c@thm\c@thm\makeatother
+\newtheorem{cor}{Corollary}[section]
+\makeatletter\let\c@cor\c@thm\makeatother
+\newtheorem{lemma}{Lemma}[section]
+\makeatletter\let\c@lemma\c@thm\makeatother
+\newtheorem{prop}{Proposition}[section]
+\makeatletter\let\c@prop\c@thm\makeatother
+\newtheorem{claim}{Claim}[section]
+\makeatletter\let\c@claim\c@thm\makeatother
+
+
+
+\newtheorem*{unnumberedtheorem}{Theorem}  % unnumbered theorem
+\newtheorem*{unnumberedcorollary}{Corollary}
+\newtheorem*{unnumberedlemma}{Lemma}
+\newtheorem*{unnumberedproposition}{Proposition}
+\newtheorem*{unnumberedclaim}{Claim}
+
+\theoremstyle{definition}
+
+\newtheorem{defn}{Definition}[section]
+\makeatletter\let\c@defn\c@thm\makeatother
+\newtheorem{const}{Construction}[section]
+\makeatletter\let\c@const\c@thm\makeatother
+\newtheorem{notn}{Notation}[section]
+\makeatletter\let\c@notn\c@thm\makeatother
+\newtheorem{outline}{Proof Outline}[section]
+\makeatletter\let\c@outline\c@thm\makeatother
+
+
+\theoremstyle{remark}
+
+\newtheorem{rem}{Remark}[section]
+\makeatletter\let\c@rem\c@thm\makeatother
+\newtheorem{ex}{Example}[section]
+\makeatletter\let\c@ex\c@thm\makeatother
+\newtheorem{observation}{Observation}[section]
+\makeatletter\let\c@observationn\c@thm\makeatother
+
+\newtheorem*{unnumberedtheoremremark}{Remark}
+\newtheorem*{unnumberedtheoremexample}{Example}
+\newtheorem*{unnumberedtheoremdefinition}{Defintion}
+
+\makeatletter
+\let\c@equation\c@thm
+\numberwithin{equation}{section}
+\makeatother
+
+
+ %Cleveref definitions
+\crefname{lemma}{Lemma}{Lemmas}
+\crefname{thm}{Theorem}{Theorems}
+\crefname{defn}{Definition}{Definitions}
+\crefname{notn}{Notation}{Notations}
+\crefname{const}{Construction}{Constructions}
+\crefname{prop}{Proposition}{Propositions}
+\crefname{rem}{Remark}{Remarks}
+\crefname{cor}{Corollary}{Corollaries}
+\crefname{equation}{Diagram}{Diagrams}
+\crefname{ex}{Example}{Examples}
+
+
+
+%% ALPHABETS %%
+\def\cA{\mathcal{A}}
+\def\cB{\mathcal{B}}
+\def\cC{\mathcal{C}}
+\def\cD{\mathcal{D}}
+\def\cE{\mathcal{E}}
+\def\cF{\mathcal{F}}
+\def\cG{\mathcal{G}}
+\def\cH{\mathcal{H}}
+\def\cI{\mathcal{I}}
+\def\cJ{\mathcal{J}}
+\def\cK{\mathcal{K}}
+\def\cL{\mathcal{L}}
+\def\cM{\mathcal{M}}
+\def\cN{\mathcal{N}}
+\def\cO{\mathcal{O}}
+\def\cP{\mathcal{P}}
+\def\cQ{\mathcal{Q}}
+\def\cR{\mathcal{R}}
+\def\cS{\mathcal{S}}
+\def\cT{\mathcal{T}}
+\def\cU{\mathcal{U}}
+\def\cV{\mathcal{V}}
+\def\cW{\mathcal{W}}
+\def\cX{\mathcal{X}}
+\def\cY{\mathcal{Y}}
+\def\cZ{\mathcal{Z}}
+
+\def\AA{\mathbb{A}}
+\def\BB{\mathbb{B}}
+\def\CC{\mathbb{C}}
+\def\DD{\mathbb{D}}
+\def\EE{\mathbb{E}}
+\def\FF{\mathbb{F}}
+\def\GG{\mathbb{G}}
+\def\HH{\mathbb{H}}
+\def\II{\mathbb{I}}
+\def\JJ{\mathbb{J}}
+\def\KK{\mathbb{K}}
+\def\LL{\mathbb{L}}
+\def\MM{\mathbb{M}}
+\def\NN{\mathbb{N}}
+\def\OO{\mathbb{O}}
+\def\PP{\mathbb{P}}
+\def\QQ{\mathbb{Q}}
+\def\RR{\mathbb{R}}
+\def\SS{\mathbb{S}}
+\def\TT{\mathbb{T}}
+\def\UU{\mathbb{U}}
+\def\VV{\mathbb{V}}
+\def\WW{\mathbb{W}}
+\def\XX{\mathbb{X}}
+\def\YY{\mathbb{Y}}
+\def\ZZ{\mathbb{Z}}
+
+%% OTHER SYMBOLS %% 
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\cod}{cod}
+
+\def\nat{\Rightarrow}
+\def\monic{\rightarrowtail}
+\def\epic{\twoheadrightarrow}
+\def\pathto{\rightsquigarrow}
+
+\newcommand{\cat}[1]{{\normalfont\texttt{#1}}}
+\newcommand{\op}[1]{{{#1}^{\cat{op}}}}
+\newcommand{\opc}[1]{\op{\cat{#1}}}
+\newcommand{\Obj}[1]{\text{Obj}(\cat{#1})}
+\newcommand{\Map}[1]{\text{Map}(\cat{#1})}
+
+% https://tex.stackexchange.com/a/118217
+% \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+% \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\title{ Higher Category Theory by Way of Topology}
+
+\author{Riley Shahar}
+
+\pagestyle{plain}
+
+\parindent0pt
+\parskip4pt
+
+
+\begin{document}
+
+
+
+\begin{abstract}
+	TODO
+\end{abstract}
+
+
+\maketitle
+
+\section{Introduction}
+
+TODO
+
+After introducing some introductory category theory in \Cref{categories}, we
+construct the fundamental groupoid in \Cref{the fundamental groupoid}. This
+motivates natural transformations in \Cref{natural transformations}, in turn
+leading to higher category theory in \Cref{higher categories}.
+
+\section{Categorical Preliminaries}\label{categories}
+
+Many of the constructions we'll encounter are categorical, or at least are
+well-stated using categorical ideas, so it's worth spending some time with basic
+category theory. Our aim will be to develop only some essential language now,
+and later use our exploration of homotopy as motivation for developing higher
+category theory. Except where noted, I follow \cite[Sections 1.1-1.3]{Riehl}.
+
+\subsection{Categories}
+
+\begin{defn}
+	A \emph{category} $\cat{C}$ consists of a collection of \emph{objects} $\Obj{C}$
+	and a collection of \emph{morphisms} $\Map{C}$, such that
 
 	\begin{itemize}
 		\item Each morphism $f$ has a specific \emph{domain} $\dom(f)$ and
-		      \emph{codomain} $\cod(f)$; we write $f: X\rightarrow Y$ or
-		      $X\xrightarrow{f} Y$.
-		\item Each object $X$ has a specific \emph{identity morphism} $1_X:
-			      X\rightarrow X$.
-		\item For each pair of morphisms $X\xrightarrow{f} Y\xrightarrow{g}
-			      Z$, there is a specific \emph{composite morphism} $gf:
-			      X\rightarrow Z$.
+		      \emph{codomain} $\cod(f)$; we write $f: x\rightarrow y$ or
+		      $x\xrightarrow{f} y$.
+		\item Each object $x$ has a specific \emph{identity morphism} $1_x:
+			      x\rightarrow x$.
+		\item For each pair of morphisms $x\xrightarrow{f} y\xrightarrow{g}
+			      z$, there is a specific \emph{composite morphism} $gf:
+			      x\rightarrow z$. We call $f$ and $g$ \emph{composition-compatible}.
 	\end{itemize}
 	This data must be \emph{associative} and \emph{unital}, which is to say,
 	\begin{itemize}
-		\item (Associativity) For any triplet of composition-compatible morphisms
-		      $X\xrightarrow{f}Y \xrightarrow{g}Z\xrightarrow{h}W$, we have $h(gf) =
+		\item (Associativity) For composition-compatible triplet, i.e.
+		      $x\xrightarrow{f}y \xrightarrow{g}z\xrightarrow{h}w$, we have $h(gf) =
 			      (hg)f$. We write merely $hgf$.
-		\item (Unital) For any $f: X\rightarrow Y$, we have $1_Yf = f = f1_X$.
+		\item (Unital) For any $f: x\rightarrow y$, we have $1_yf = f = f1_x$.
 	\end{itemize}
 
 	In other words, the following diagrams commute:
@@ -35,7 +248,7 @@ numbersections: true
 		\centering
 		\begin{multicols}{2}
 			\begin{tikzcd}
-				X & Y & Z & W
+				x & y & z & w
 				\arrow["f", from=1-1, to=1-2]
 				\arrow["g", from=1-2, to=1-3]
 				\arrow["h", from=1-3, to=1-4]
@@ -44,89 +257,382 @@ numbersections: true
 			\end{tikzcd}
 
 			\begin{tikzcd}
-				X & X \\
-				& Y
-				\arrow["1_X", from=1-1, to=1-2]
+				x & x \\
+				& y
+				\arrow["1_x", from=1-1, to=1-2]
 				\arrow["f", from=1-2, to=2-2]
 				\arrow["f"', from=1-1, to=2-2]
 			\end{tikzcd}
 			\begin{tikzcd}
-				X & Y \\
-				& Y
+				x & y \\
+				& y
 				\arrow["f", from=1-1, to=1-2]
-				\arrow["1_Y", from=1-2, to=2-2]
+				\arrow["1_y", from=1-2, to=2-2]
 				\arrow["f"', from=1-1, to=2-2]
 			\end{tikzcd}
 		\end{multicols}
 	\end{figure}
-\end{dfn}
+\end{defn}
 
-\begin{notation}
-	I will use $\cC(X, Y)$ for the collection of morphisms with domain $X$ and
-	codomain $Y$. I also choose to use multiplicative notation for composition,
-	instead of $\circ$, to distinguish it from composition of continuous
-	functions, since in many of our categories morphism composition will be
-	concatenation, not function composition.
-\end{notation}
 
-There are numerous special kinds of morphisms. We define some now.
+\begin{notn} We will use $\cat{C}(x, y)$ for the morphisms with domain $X$ and
+	codomain $Y$. We also choose to use multiplicative notation for composition,
+	instead of $\circ$, to distinguish it from function composition, since in many
+	of our categories morphism composition will be concatenation or something
+	completely separate from function composition. \end{notn}
 
-\begin{dfn}[Isomorphism]
-	A morphism $f: X\rightarrow Y$ is an \emph{isomorphism} if there is a morphism
-	$g: Y\rightarrow X$ such that $gf = 1_X$ and $fg = 1_Y$. We say $X$ and $Y$
-	are isomorphic and write $X\cong Y$.
-\end{dfn}
+\begin{ex}\label{concrete categories} Many mathematical structures can be studied as categories:
+	\begin{itemize}
+		\item $\cat{Set}$ is the category of sets and set-functions.
+		\item $\cat{Poset}$ is the category of partially ordered sets and
+		      monotone functions.
+		\item $\cat{Grp}$ is the category of groups and homomorphisms.
+		\item $\cat{Top}$ is the category of topological spaces and continuous
+		      functions.
+		\item For any field $\Bbbk$, $\cat{Vect}_\Bbbk$ is the category of vector
+		      spaces over $k$ and linear maps.
+	\end{itemize}
+\end{ex}
+
+These examples demonstrate the need for the word "collection" in the
+definition of a category: there is no set of all sets, for example. In general,
+we'll avoid detailing the set-theoretic issues here.
+
+\begin{defn} A category is \emph{small} if its morphisms
+	form a set. A category is \emph{locally small} if, for each pair of objects $x,
+		y$, the morphisms $\cat{C}(x, y)$ forms a set. \end{defn}
+
+\begin{rem}
+	Any small category is locally small, since the morphisms between two objects
+	form a subset of the set of morphisms. The objects in any small category form
+	a set, since they are in bijection with the identity morphisms, which form a
+	subset of the set of morphisms.
+\end{rem}
+
+None of the categories in \Cref{concrete categories} is small. In fact, each of
+these examples takes as objects sets with certain structure and as morphisms
+structure-preserving functions between those sets. As the following example
+shows, these are far from the only kind of category.
+
+\begin{ex}\label{abstract categories} The following are also categories:
+	\begin{itemize}
+		\item The \emph{empty category} is the category with no objects and no
+		      morphisms.
+		\item The \emph{trivial category} is the category with one object and only
+		      its identity morphism.
+		\item A set $X$ can be represented as a category whose objects correspond with the elements
+		      of $X$ and which has only identity morphisms. A category with only
+		      identity morphisms is called \emph{discrete}.
+		\item A group $G$ can be represented as a category with one object whose
+		      morphisms correspond with the element of $G$, with composition
+		      determined by multiplication. Following \cite{Porter}, we call this
+		      category $\GG$.
+		\item A poset $P$ can be represented as a category whose objects correspond
+		      with the elements of $P$ and with a single morphism $x\rightarrow y$
+		      whenever $x\leq y$. We call this category $\PP$.
+	\end{itemize}
+\end{ex}
+
+\subsection{(Iso)morphisms}
+
+The main philosophy of category theory is roughly that
+
+\begin{displayquote}
+	an object is completely determined by its relationship with other objects,
+	\cite[p. 8]{Bradley}
+\end{displayquote}
+
+and so to study an object, one should study its morphisms. I can't resist
+sharing the following example:
+
+\begin{ex}\cite[Example 2.1.6(ii)]{Riehl}
+	Fixing a topological space $X$, we can recover both the points of $X$ and the
+	topology on $X$---in other words, all the data of the space---via studying
+	only maps involving $X$, as follows.
+
+	To recover the points, note that a map $f: *\rightarrow X$, where $*$ is the
+	singleton space, consists of picking out any point $f(*)\in X$. Thus the
+	points are in bijection with $\cat{Top}(*, X)$.
+
+	To recover the topology, let $S = \{0, 1\}$ with the topology $\{\emptyset,
+		\{1\}, X\}$. To any open set $U\subseteq X$, associate the map
+	$$f_U(x) = \begin{cases}
+			1 & \text{ if }x\in U    \\
+			0 & \text{ if }x\notin U
+		\end{cases}$$
+
+	But we can write any continuous function $f: X\rightarrow S$ in this form by
+	setting $U = f^{-1}(\{1\})$. Thus the open sets are in bijection with
+	$\cat{Top}(X, S)$.
+\end{ex}
+
+A chiefly important kind of morphism is the \emph{isomorphism}, which (as in
+most algebric contexts) suggests a fundamental similarity between its domain and
+codomain.
+
+\begin{defn}
+	A morphism $f: x\rightarrow y$ is an \emph{isomorphism} if there is a morphism
+	$g: y\rightarrow x$ such that $gf = 1_x$ and $fg = 1_y$. We call $g$ the
+	\emph{inverse} of $f$ and write $g = f^{-1}$. We say $x$ and $y$ are
+	\emph{isomorphic} and write $x\cong y$.
+\end{defn}
+
+\begin{ex}\label{isomorphisms} Isomorphisms are interesting in many of our examples of categories:
+	\begin{itemize}
+		\item In $\cat{Set}$, the isomorphisms are invertible set-functions, i.e. bijections.
+		\item In $\cat{Grp}$, the isomorphisms are group isomorphisms.
+		\item In $\cat{Top}$, the isomorphisms are homeomorphisms.
+		\item In $\cat{Vect}_{\Bbbk}$, the isomorphisms are vector space isomorphisms.
+		\item For any group $G$, any morphism in $\GG$ is an isomorphism;
+		      this fact corresponds to the existence of inverses in the group. (We
+		      will have more to say about this example in \Cref{sec:groupoids}.)
+		\item For any poset $P$, the isomorphisms in $\PP$ are the identities;
+		      this fact corresponds to anti-symmetry of the relation.
+	\end{itemize}
+\end{ex}
+
+In a locally small category $\cat{C}$, where $f: x\rightarrow y$ is any morphism
+and $z$ is an ambient object, we can define maps $f_*: \cat{C}(z, x)\rightarrow
+	\cat{C}(z, y)$ and $f^*: \cat{C}(y, z)\rightarrow \cat{C}(x, z)$ via post- and
+pre-composition by $f$, respectively. In this case, \Cref{isomorphism
+	characterization} gives an important characterization of isomorphisms in terms
+of these maps.
+
+\begin{thm}\label{isomorphism characterization}Let $\cat{C}$ be locally small.
+	Then the following are equivalent:
+
+	\begin{enumerate}
+		\item  $f: x\rightarrow y$ is an isomorphism.
+		\item  For every $z\in\cat{C}$, $f_*$ is a bijection of sets.
+		\item For every $z\in\cat{C}$, $f^*$ is a bijection of sets.
+	\end{enumerate}
+\end{thm}
+
+\begin{rem}
+	If objects are characterized by their morphisms, then \Cref{isomorphism
+		characterization} supports the idea that isomorphic objects truly look the
+	same to the machinery of the category.
+\end{rem}
+
+\begin{proof}[Proof of \Cref{isomorphism characterization}]
+	We prove equivalence $(1)\Leftrightarrow(2)$; the proof $(1)\Leftrightarrow(3)$ is
+	similar\footnote{One can also conclude the latter via studying $(2)$ in the
+		context of the \emph{opposite category} of $\cat{C}$, but this is outside our
+		scope. See \cite[Lemma 1.2.3]{Riehl} for such a proof.}.
+
+	Let $f$ be an isomorphism with inverse $g$. We show $g_*$ is an inverse of
+	$f_*$. In particular, for any morphisms $h: z\rightarrow x$ and $k:
+		z\rightarrow y$, we have that
+	$$g_*(f_*(h)) = gfh = 1_Xh = h
+		\quad
+		\text{ and }
+		\quad
+		f_*(g_*(k)) = fgk = 1_Yk = k.$$
+
+	Conversely, let $f_*$ be bijective. Letting $z = y$, by surjectivity there is
+	some $g\in\cat{C}(y, x)$ such that $1_y = f_*(g) = fg$. But now letting $z =
+		x$, we see that $$f_*(gf) = fgf = 1_yf = f = f_*(1_x),$$ and so by injectivity
+	$gf = 1_x$. Thus $g$ is an inverse of $f$, hence $f$ is an isomorphism.
+	\qedhere
+
+\end{proof}
+
+\subsection{Functors}
+
+If the philosophy of category theory is to study morphisms between objects, then
+functors answer the obvious question: what are the morphisms between categories?
+
+\begin{defn}
+	A \emph{functor} $F: \cat{C}\rightarrow\cat{D}$ between
+	categories $\cat{C}$ and $\cat{D}$ consists of
+	\begin{itemize}
+		\item For each object $x\in\Obj{C}$, an object $Fx\in\Obj{D}$.
+		\item For each morphism $f\in\Map{C}$, a morphism $Ff\in\Map{D}$.
+	\end{itemize}
+
+	This data must preserve the categorical structure, i.e. domains, codomains,
+	identities, and composites, that is,
+
+	\begin{itemize}
+		\item For each $f\in\Map{C}$, $\dom(Ff) = F(\dom(f))$ and $\cod(Ff) =
+			      F(\cod(f))$.
+		\item For each composition-compatible pair $f,g\in\Map{C}$, $Fg\cdot Ff =
+			      F(g\cdot f)$.
+		\item For each $x\in\Obj{C}$, $F(1_x) = 1_{Fx}$.
+	\end{itemize}
+\end{defn}
+
+\begin{ex}
+	Many common constructions are functors:
+	\begin{itemize}
+		\item The power set defines a functor $\cP:
+			      \cat{Set}\rightarrow\cat{Set}$ which takes a morphism $f$ to its
+		      action via images, i.e. $\cP(f)(A) = f(A)$.
+		\item On a category $\cat{C}$ like those in \Cref{concrete categories},
+		      say $\cat{Grp}$, the \emph{forgetful functor}
+		      $\cat{C}\rightarrow\cat{Set}$ sends an object to its underlying set
+		      and a morphism to its underlying set-function,
+		      "forgetting" the algebraic structure.
+		\item The free group defines a functor $\cat{Set}\rightarrow\cat{Grp}$ which
+		      sends a set to its free group and a map to its letter-wise action on
+		      words.
+		\item A group action of a group $G$ on a set $A$ can be regarded as a functor
+		      $\GG\rightarrow\cat{Set}$ wich sends the single object of $\GG$ to $A$ and
+		      a morphism to the endofunction defined by that element's action on
+		      $A$.
+	\end{itemize}
+\end{ex}
 
 \begin{thm}\label{functors preserve isomorphism}
-	Let $F: \cC\rightarrow \cD$ be a functor and $f: X\rightarrow Y$ an isomorphism in
-	$\cD$. Then $F(f)$ is an isomorphism between $F(X)$ and $F(y)$ in $\cD$.
+	Let $F: \cat{C}\rightarrow \cat{D}$ be a functor and $f: x\rightarrow y$ an isomorphism in
+	$\cat{D}$. Then $Ff$ is an isomorphism between $Fx$ and $Fy$ in $\cat{D}$.
 \end{thm}
 
 \begin{proof}
-	Let $f^{-1}$ be the inverse of $f$. Then $$F(f^{-1})F(f) = F(f^{-1}f) = F(1_x)
-		= 1_{F(x)},$$ and the same works on the other side.
+	Let $g: y\rightarrow x$ invert $f$. Then $$(Fg)(Ff) = F(gf) = F1_x = 1_{Fx},$$
+	and the same works on the other side.
 \end{proof}
 
+There is a category of categories, $\cat{Cat}$, whose objects are categories and
+whose morphisms are functors\footnote{Categories in \cat{Cat} must be locally
+	small, for set-theoretic reasons. It is common, e.g. in \cite{Riehl}, to call
+	this category $\cat{CAT}$, to distinguish it from the category of small
+	categories, which in turn is called $\cat{Cat}$. As we ignore these details, we
+	use the more convenient notation.}. This allows us to define isomorphic
+categories straightforwardly:
 
-\subsection{Groups and Groupoids}
+\begin{defn}
+	Two categories $\cat{C}$ and $\cat{D}$ are \emph{isomorphic} if there is a
+	functor $F: \cat{C}\rightarrow\cat{D}$ which is an isomorphism in $\cat{Cat}$.
+\end{defn}
 
-% TODO
+We will see later, in \Cref{fundamental groupoid is not homotopy invariant}, that
+this definition is generally too restrictive. That will motivate our discussion of
+\emph{natural transformations} in \Cref{natural transformations}, where we will
+define a more useful notion of \emph{equivalence of categories}.
 
+\subsection{Groupoids}\label{sec:groupoids}
 
+According to \Cref{abstract categories} and \Cref{isomorphisms}, any group can
+be represented by a specific kind of category, one with a single object and only
+isomorphisms. Indeed, any such category assembles into a group:
 
-\section{The Fundamental Groupoid}
-\label{The Fundamental Group}
+\begin{itemize}
+	\item Elements are given by morphisms, with multiplication given by
+	      composition.
+	\item Multiplication is well-defined because any two morphisms have the same
+	      domain and codomain (the single object), and hence are
+	      composition-compatible.
+	\item Multiplication is associative because composition is associative.
+	\item The group identity is the identity morphism on the single object.
+	\item Morphisms have inverses since they are isomorphisms.
+\end{itemize}
 
-\begin{notation}
-	When the context is unclear, we will call a general homotopy a \emph{free
-		homotopy}, and a homotopy with fixed endpoints a \emph{path homotopy}.
-\end{notation}
+It turns out that the requirement of a single object isn't necessary for the
+algebraic structure we recover to be interesting. Indeed, relaxing this
+requirement gives our fundamental object of study:
+
+\begin{defn}
+	A \emph{groupoid} is a category in which every morphism is an isomorphism.
+\end{defn}
+
+The second bullet above suggests that a groupoid will have to sacrifice
+well-definideness of multiplication. Indeed, there is a purely algebraic picture
+of groupoids defined in terms of partial functions, but the categorical one will
+be sufficient for our needs. For a more complete discussion, see \cite{Brown}.
+
+\begin{ex}\label{groupoids}
+	The following are examples of groupoids:
+	\begin{itemize}
+		\item Per the above discussion, a group is a groupoid with one element.
+		\item The categorification of a set, from \Cref{concrete categories}, is a
+		      groupoid.
+		\item The empty and trivial categories, from \Cref{abstract categories}, are
+		      groupoids.
+		\item A groupoid with only identity morphisms is a \emph{discrete groupoid}.
+		\item A groupoid with at least one morphism between any two objects is \emph{connected}.
+		\item A groupoid with precisely one morphism between any two objects is a
+		      \emph{tree groupoid}.
+	\end{itemize}
+\end{ex}
+
+Since groupoids are defined as categories, unsurprisingly, the morphisms between
+them are functors:
+
+\begin{defn}\cite[Section 6.4]{Brown}
+	A \emph{groupoid morphism} is a functor between groupoids.
+\end{defn}
+
+Unsurprisingly, there is a category, $\cat{Grpd}$, of groupoids and groupoid
+morphisms.
+
+\section{The Fundamental Groupoid} \label{the fundamental groupoid}
+
+A central idea of algebraic topology is that topological notions are encoded in
+algebraic invariants of a space. The first such invariant we study is the
+\emph{fundamental groupoid}, in some sense a more natural object than the
+fundamental group, constructed from the homotopy classes of paths in a space.
+Except where noted, I follow \cite[Chapter 6]{Bradley}.
+
+\subsection{Homotopy}\label{sec:homotopy}
+
+Recall that a \emph{homotopy} between continuous functions $f: X\rightarrow Y$
+and $g: X\rightarrow Y$ is a continuous function $H: X\times I\rightarrow Y$
+such that $H(-, 0) = f$ and $H(-, 1) = g$. This homotopy is further a \emph{path
+	homotopy}\footnote{ When the context is unclear, we will call a general homotopy
+	a \emph{free homotopy}, and a homotopy with fixed endpoints a \emph{path
+		homotopy}. } when $X = I$ (so $f$ and $g$ are paths) and when $H(0, -)$ and
+$H(1, -)$ are constant.
+
+Two functions are \emph{free homotopic} when there exists a homotopy between
+them. This forms an equivalence relation on the class of continuous functions
+$X\rightarrow Y$; we write $f\simeq g$. When the functions are paths and the
+homotopy is a path homotopy, the paths are \emph{path homotopic} and we write
+$f\simeq_p g$.
+
+Two spaces $X$ and $Y$ are \emph{homotopy equivalent} when there are maps $f:
+	X\rightarrow Y$ and $g: Y\rightarrow X$ such that $fg\simeq 1_Y$ and $gf\simeq
+	1_X$.
+
+We can form the category $\cat{hTop}$ by taking spaces as objects and homotopy
+classes of maps as morphisms. One needs to check that composition "works" in
+this category; this was done in class.
+
+\begin{rem} Two spaces are homotopy equivalent precisely they are isomorphic in
+	$\cat{hTop}$. There is a functor $\cat{Top}\rightarrow\cat{hTop}$ that is the
+	identity on objects and sends a continuous function to its path homotopy
+	class. We therefore call functors out of $\cat{hTop}$ \emph{homotopy
+		invariants}, since by \Cref{functors preserve isomorphism} they homotopy
+	equivalent spaces to isomorphic objects. \end{rem}
+
+\subsection{Construction}
 
 Before defining the fundamental groupoid, there is a nice geometric picture to
-tell about the fundamental group. Fix a topological space $X$ and a point $x_0$.
-Draw a representative of each of the non-identity homotopy classes of loops at
-$x_0$, and note that each arrow is double-sided, since paths can be traversed in
-either direction. When you "erase" the other information of the underlying
-space, you get a single point and a bunch of double-headed arrows: exactly the
-"categories-as-dots-and-arrows" picture of a group!
+tell. Fix a topological space $X$ and pick some points and paths between those
+points. When you "erase" the other information of the underlying
+space, you get several points and a bunch of (double-headed) arrows.
 
 \begin{figure}[H]
 	\centering
 	\input{group.tikz}
-	\caption{Generators of the fundamental group on a two-holed disk.}
+	\caption{Some points and paths on a two-holed disk.}
 	\label{fig:group}
 \end{figure}
 
-We'll keep returning to this intuition of homotopy groups "erasing" some of the
-underlying geometry of the space. More immediately, however, this view strongly
-suggests that when we take multiple points from our underlying space, we should
-get back a group with multiple objects---a groupoid---from the construction.
+This looks suspiciously like a groupoid---in particular, each of the arrows are
+double-headed, and hence "invertible". The issue is that we don't necessarily
+see the inverses or composites when we just take some points and some paths.
 
-\begin{dfn}[Fundamental Groupoid]
-	The \textit{fundamental groupoid} $\Pi_1(X)$ of a space $X$ is the category
+We'll return to this intuition of the fundamental groupoid "forgetting" some of
+the underlying geometry of the space. More immediately, however, this view
+strongly suggests that when we take all the path classes from our underlying space,
+we should get back a groupoid.
+
+\begin{defn}[Fundamental Groupoid]
+	The \textit{fundamental groupoid} $\Pi_1X$ of a space $X$ is the category
 	whose objects are points of $X$ and whose morphisms are path homotopy classes
 	of paths in $X$.
-\end{dfn}
+\end{defn}
 
 Specifically, let $x,y,z\in X$, $f$ a path from $x$ to $y$, and $g$ a path from
 $y$ to $z$. Then,
@@ -143,19 +649,22 @@ homotopies. For example, in general two paths with different start points may be
 free homotopic, meaning without restricting to path homotopy we could not even
 write down the domain and codomain of our morphisms.
 
-\begin{ex}
-	We can immediately compute a few fundamental groupoids. [Brown p. 213]
+\begin{ex}\cite[p. 213]{Brown}
+	We can immediately compute a few fundamental groupoids.
 	\begin{itemize}
-		\item The fundamental groupoid of a convex space is a \emph{tree groupoid},
-		      i.e. a groupoid with precisely one morphism between any two objects. This
-		      corresponds to the fact that any two paths with the same endpoints in such
-		      a space are homotopic via the straight line homotopy.
-		\item The fundamental groupoid of a totally disconnected space is a
-		      \emph{discrete groupoid}, i.e. a groupoid with only identity morphisms.
-		      This corresponds to the fact that the only paths in such spaces are the
-		      constant paths.
+		\item The fundamental groupoid of a convex space is a tree groupoid (defined
+		      in \Cref{groupoids}). This corresponds to the fact that any two paths with
+		      the same endpoints in such a space are homotopic via the straight line
+		      homotopy.
+		\item The fundamental groupoid of a totally disconnected space is a discrete
+		      groupoid. This corresponds to the fact that the only paths in such spaces
+		      are the constant paths.
 	\end{itemize}
 \end{ex}
+
+\subsection{Categorical Properties} We can learn a lot about the fundamental
+groupoid by studying it categorically. First, we should confirm it is what we
+claim it is:
 
 \begin{prop}\label{fundamental groupoid is a groupoid}
 	The fundamental groupoid is a groupoid.
@@ -166,24 +675,24 @@ write down the domain and codomain of our morphisms.
 	restate the results here for groupoids.
 	\begin{itemize}
 		\item Composition is well-defined, since concatenation preserves homotopy
-		      equivalence.
+		      class.
 		\item Composition is associative, since concatenation is associative up to
 		      homotopy.
 		\item Every object $x$ has $[c_x]$ as an identity.
 		\item Every morphism $[f]$ has $[\bar{f}]$ as an inverse.
 	\end{itemize}
 
-	The first three say that $\Pi_1(X)$ is a category, and the last says that it
+	The first three say that $\Pi_1X$ is a category, and the last says that it
 	is a groupoid.
 \end{proof}
 
 The construction of the fundamental groupoid naturally gives rise to a functor
-$$\Pi_1: \catname{Top}\rightarrow\catname{Grpd}.$$ In particular, let $f: X\rightarrow
+$$\Pi_1: \cat{Top}\rightarrow\cat{Grpd}.$$ In particular, let $f: X\rightarrow
 	Y$ be a continuous function. We can view $f$ as acting on paths via composition.
 Accordingly, we define
 \begin{align*}
-	\Pi_1(f)  \colon \Pi_1(X) & \to \Pi_1(Y)            \\
-	[\gamma]                  & \mapsto [f\circ\gamma].
+	\Pi_1f  \colon \Pi_1X & \to \Pi_1Y              \\
+	[\gamma]              & \mapsto [f\circ\gamma].
 \end{align*}
 
 % TODO: picture
@@ -200,8 +709,7 @@ This mapping is well-defined because composition preserves homotopy equivalence.
 	Again, much of this work was done in class.
 	\begin{itemize}
 		\item $\Pi_1$ respects composition, since composition is associative.
-		\item $\Pi_1$ respects the identity, since composition by the identity
-		      fixes homotopy classes. \qedhere
+		\item $\Pi_1$ respects identities, since composing the identity fixes homotopy classes. \qedhere
 	\end{itemize}
 \end{proof}
 
@@ -212,7 +720,7 @@ of a space than the fundamental group does.
 
 \begin{cor}\label{fundamental groupoid is topological}
 	The fundamental groupoid is a topological invariant. More precisely, if
-	$X\cong Y$, then $\Pi_1(X)\cong \Pi_1(Y)$.
+	$X\cong Y$, then $\Pi_1X\cong \Pi_1Y$.
 \end{cor}
 
 \begin{proof}
@@ -220,18 +728,145 @@ of a space than the fundamental group does.
 		groupoid is a functor}.
 \end{proof}
 
-\begin{thm}\label{fundamental groupoid is homotopy invariant}
-	The fundamental groupoid is a homotopy invariant. More precisely, if $X\simeq
-		Y$, then $\Pi_1(X)\cong \Pi_1(Y)$.
+\begin{rem}\label{fundamental groupoid is not homotopy invariant} As defined,
+	the fundamental groupoid is a \emph{not} a homotopy invariant. For instance,
+	since objects of the fundamental groupoid are in bijection with elements of
+	the underlying space, the fundamental groupoid of $D^n$ has uncountably many
+	objects, whereas the fundamental groupoid of the point has only one. \end{rem}
+
+This unfortunate fact suggests an issue with our notion of isomorphism of
+categories: it requires objects to be in bijection, which is far too strong to
+express homotopy invariants. There is a more natural notion, equivalence of
+categories, somewhat analogous to homotopy equivalence, which requires some
+additional machinery to develop.
+
+\section{Natural Transformations and 2-Categories}
+\label{natural transformations}
+
+If we want our categorical constructions to play nicely with homotopy, it will
+help to define an analogue to homotopy on categories. It turns out the correct
+notion is a \emph{natural transformation}, a way to relate functors analogous to
+a homotopy. This notion will allow us to define \emph{equivalence of
+	categories}. Here I follow \cite[Sections 1.4-1.7]{Riehl}.
+
+\subsection{Natural Transformations as Categorical Homotopy}
+
+Let $H$ be a homotopy between continuous maps $f,g: X\rightarrow Y$. We can think
+of $H(x, -)$ as morphing the point $f(x)$ into $g(x)$. In the same way, we want to define
+a transformation between functors $F,G: \cat{C}\rightarrow\cat{D}$ which we can
+think of as morphing the object $Fx$ into the point $Gx$. Of course, the right
+thing to do this morphing is exactly a morphism in $\cat{D}$. That motivates the
+following definition:
+
+\begin{defn}[Natural Transformation]
+	A \emph{natural transformation} $\alpha: F\nat G$ between
+	functors $F,G:\cat{C}\rightarrow\cat{D}$ consists of, for each
+	object $x\in\Obj{C}$, a morphism $\alpha_x: F_x\rightarrow G_x\in \cat{D}$,
+	called the \emph{components} of $\alpha$.
+
+	This data must preserve morphisms in $\cat{C}$, in the sense that for any
+	morphism $f: x\rightarrow y\in\cat{C}$, the following square must commute:
+	\begin{figure}[H]
+		\centering
+		\begin{tikzcd}
+			Fx & Gx \\
+			Fy & Gy
+			\arrow["Ff", from=1-1, to=2-1, swap]
+			\arrow["\alpha_x", from=1-1, to=1-2]
+			\arrow["\alpha_y", from=2-1, to=2-2, swap]
+			\arrow["Gf"', from=1-2, to=2-2, swap]
+		\end{tikzcd}
+	\end{figure}
+\end{defn}
+
+Thinking of natural transformations as categorical analogues of homotopy will be
+critical for what is to come. The commutative square above is analogous to the
+requirement that a homotopy behaves as $f$ at $t=0$ and as $g$ at $t=1$; we
+require that the transformation behaves as $F$ "before" the transformation and
+as $G$ "after" the transformation.
+
+An alternative definition makes the translation even clearer. Let $\mathbbm{2}$
+be the category with two objects, $0$ and $1$, and a single non-identity
+morphism $0\rightarrow 1$. Defining the product category in the obvious way,
+with component-wise composition, a natural transformation between $F$ and $G$
+corresponds bijectively to a functor $H:
+	\cat{C}\times\mathbbm{2}\rightarrow\cat{D}$ such that the following diagram
+commutes:
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzcd}
+		\cat{C} & \cat{C}\times\mathbbm{2} & \cat{C} \\
+		& \cat{D} &
+		\arrow["i_0", from=1-1, to=1-2]
+		\arrow["i_1", from=1-3, to=1-2, swap]
+		\arrow["F", from=1-1, to=2-2, swap]
+		\arrow["G", from=1-3, to=2-2]
+		\arrow["H", from=1-2, to=2-2]
+	\end{tikzcd}
+\end{figure}
+
+Here $i_0$ and $i_1$ are the obvious inclusion functors. (TODO: proof from
+\cite[Lemma 1.5.1]{Riehl}.)
+
+One key difference between homotopy and natural transformations is that
+homotopies are always invertible, in the sense that for a homotopy $H$ from $f$
+to $g$, $H(-, 1-t)$ is a homotopy from $g$ to $h$. This key fact means
+homotopies can be used to define an equivalence relation on continuous maps.
+Since we are primarily concerned with the special case of groupoids, in which
+"everything" is invertible, this ought to be a non-issue.
+
+\begin{defn}
+	A \emph{natural isomorphism} is a natural transformation whose components are
+	each isomorphisms.
+\end{defn}
+
+\begin{rem}
+	Any natural transformation into a groupoid is a natural isomorphism.
+\end{rem}
+
+\begin{thm}\label{natural isomorphisms are invertible}
+	Let $F,G: \cat{C}\rightarrow\cat{D}$ be functors, and $\alpha$ a natural
+	isomorphism between them. For each $x\in\cat{D}$, let $\beta_x$ be the
+	inverse of $\alpha_x$. Then the $\beta_x$ collect into a natural
+	isomorphism, $\beta$, between $\cat{D}$ and $\cat{C}$.
 \end{thm}
 
-This theorem is harder than topological invariance, because it tells us
-something specific about the functor $\Pi_1$.
+That $\beta$ is an isomorphism follows because inverses of isomorphisms are
+isomorphisms. We need to show that $\beta$ is a natural transformation, i.e.
+that for any $x, y\in\cat{C}$, the following square commutes:
 
-% TODO: what does the correct result look like? e.g. Dn and 1 have different
-% groupoids (because of cardinality), but maybe the same up to some kind of
-% natural isomorphism of categories
+\begin{figure}[H]
+	\centering
+	\begin{tikzcd}
+		Gx & Fx \\
+		Gy & Fy
+		\arrow["Gf", from=1-1, to=2-1, swap]
+		\arrow["\beta_x", from=1-1, to=1-2]
+		\arrow["\beta_y", from=2-1, to=2-2, swap]
+		\arrow["Ff", from=1-2, to=2-2]
+	\end{tikzcd}
+\end{figure}
 
-\begin{proof}
+(TODO: proof)
 
-\end{proof}
+\subsection{Equivalence of Categories}
+
+TODO.
+
+\subsection{The 2-Category of Categories.}\label{1cat}
+
+TODO.
+
+\section{Higher Categories and Higher Groupoids}\label{higher categories}
+
+TODO.
+
+\section{$\infty$-groupoids as spaces}\label{infinity groupoids}
+
+TODO; not sure I'll have space for this. Following \cite{Porter}.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}
