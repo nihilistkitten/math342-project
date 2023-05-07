@@ -758,7 +758,7 @@ think of as morphing the object $Fx$ into the point $Gx$. Of course, the right
 thing to do this morphing is exactly a morphism in $\cat{D}$. That motivates the
 following definition:
 
-\begin{defn}[Natural Transformation]
+\begin{defn}[Natural Transformation]\label{natural transformation}
 	A \emph{natural transformation} $\alpha: F\nat G$ between
 	functors $F,G:\cat{C}\rightarrow\cat{D}$ consists of, for each
 	object $x\in\Obj{C}$, a morphism $\alpha_x: F_x\rightarrow G_x\in \cat{D}$,
@@ -832,23 +832,28 @@ Since we are primarily concerned with the special case of groupoids, in which
 	isomorphism, $\beta$, between $\cat{D}$ and $\cat{C}$.
 \end{thm}
 
-That $\beta$ is an isomorphism follows because inverses of isomorphisms are
-isomorphisms. We need to show that $\beta$ is a natural transformation, i.e.
-that for any $x, y\in\cat{C}$, the following square commutes:
+\begin{proof}
+	That $\beta$ is an isomorphism follows because inverses of isomorphisms are
+	isomorphisms. We need to show that $\beta$ is a natural transformation, i.e.
+	that for any $x, y\in\cat{C}$, the following square commutes:
 
-\begin{figure}[H]
-	\centering
-	\begin{tikzcd}
-		Gx & Fx \\
-		Gy & Fy
-		\arrow["Gf", from=1-1, to=2-1, swap]
-		\arrow["\beta_x", from=1-1, to=1-2]
-		\arrow["\beta_y", from=2-1, to=2-2, swap]
-		\arrow["Ff", from=1-2, to=2-2]
-	\end{tikzcd}
-\end{figure}
+	\begin{figure}[H]
+		\centering
+		\begin{tikzcd}
+			Gx & Fx \\
+			Gy & Fy
+			\arrow["Gf", from=1-1, to=2-1, swap]
+			\arrow["\beta_x", from=1-1, to=1-2]
+			\arrow["\beta_y", from=2-1, to=2-2, swap]
+			\arrow["Ff", from=1-2, to=2-2]
+		\end{tikzcd}
+	\end{figure}
 
-(TODO: proof)
+	But this exactly comes from replacing $\alpha_x$ and $\alpha_y$ with their
+	inverses $\beta_x$ and $\beta_y$ in the square from \Cref{natural
+		transformation}, which we can do by definition of isomorphism.
+
+\end{proof}
 
 \subsection{Equivalence of Categories}
 

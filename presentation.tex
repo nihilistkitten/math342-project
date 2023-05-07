@@ -1,0 +1,288 @@
+\documentclass{beamer}
+\usepackage{adjustbox}
+\usepackage{multicol}
+\usepackage{tikz-cd}
+\usepackage{quiver}
+\usepackage{bbm}
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+%% ALPHABETS %%
+\def\cA{\mathcal{A}}
+\def\cB{\mathcal{B}}
+\def\cC{\mathcal{C}}
+\def\cD{\mathcal{D}}
+\def\cE{\mathcal{E}}
+\def\cF{\mathcal{F}}
+\def\cG{\mathcal{G}}
+\def\cH{\mathcal{H}}
+\def\cI{\mathcal{I}}
+\def\cJ{\mathcal{J}}
+\def\cK{\mathcal{K}}
+\def\cL{\mathcal{L}}
+\def\cM{\mathcal{M}}
+\def\cN{\mathcal{N}}
+\def\cO{\mathcal{O}}
+\def\cP{\mathcal{P}}
+\def\cQ{\mathcal{Q}}
+\def\cR{\mathcal{R}}
+\def\cS{\mathcal{S}}
+\def\cT{\mathcal{T}}
+\def\cU{\mathcal{U}}
+\def\cV{\mathcal{V}}
+\def\cW{\mathcal{W}}
+\def\cX{\mathcal{X}}
+\def\cY{\mathcal{Y}}
+\def\cZ{\mathcal{Z}}
+
+\def\AA{\mathbb{A}}
+\def\BB{\mathbb{B}}
+\def\CC{\mathbb{C}}
+\def\DD{\mathbb{D}}
+\def\EE{\mathbb{E}}
+\def\FF{\mathbb{F}}
+\def\GG{\mathbb{G}}
+\def\HH{\mathbb{H}}
+\def\II{\mathbb{I}}
+\def\JJ{\mathbb{J}}
+\def\KK{\mathbb{K}}
+\def\LL{\mathbb{L}}
+\def\MM{\mathbb{M}}
+\def\NN{\mathbb{N}}
+\def\OO{\mathbb{O}}
+\def\PP{\mathbb{P}}
+\def\QQ{\mathbb{Q}}
+\def\RR{\mathbb{R}}
+\def\SS{\mathbb{S}}
+\def\TT{\mathbb{T}}
+\def\UU{\mathbb{U}}
+\def\VV{\mathbb{V}}
+\def\WW{\mathbb{W}}
+\def\XX{\mathbb{X}}
+\def\YY{\mathbb{Y}}
+\def\ZZ{\mathbb{Z}}
+
+%% OTHER SYMBOLS %% 
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\cod}{cod}
+
+\def\nat{\Rightarrow}
+\def\monic{\rightarrowtail}
+\def\epic{\twoheadrightarrow}
+\def\pathto{\rightsquigarrow}
+
+\newcommand{\cat}[1]{{\normalfont\texttt{#1}}}
+\newcommand{\op}[1]{{{#1}^{\cat{op}}}}
+\newcommand{\opc}[1]{\op{\cat{#1}}}
+\newcommand{\Obj}[1]{\text{Obj}(\cat{#1})}
+\newcommand{\Map}[1]{\text{Map}(\cat{#1})}
+
+% https://tex.stackexchange.com/a/118217
+% \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+% \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\title{The Fundamental Groupoid}
+\author{Riley Shahar}
+\begin{document}
+
+\tikzset{
+	invisible/.style={opacity=0},
+	visible on/.style={alt={#1{}{invisible}}},
+	alt/.code args={<#1>#2#3}{%
+			\alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}}%
+		}
+}
+
+\date{}
+\frame{\titlepage}
+
+\begin{frame}[fragile]
+	\frametitle{Categories}
+
+	\begin{multicols}{2}
+		\begin{tikzcd}[node distance=2cm,auto]
+			\only<2->{x}
+			\arrow[visible on=<3-3>, rd, swap, "h"]
+			\arrow[visible on=<4->, rd ,swap, "gf = h"]
+			\arrow[visible on=<3->, r, "f"]
+			\arrow[visible on=<5->, out=155, in=115, loop, "1_x"]
+			&
+			\only<2->{y}
+			\arrow[visible on=<3->, d, "g"]
+			\arrow[visible on=<5->, out=65, in=25, loop, "1_y"] \\
+			&
+			\only<2->{z}
+			\arrow[visible on=<5->, loop right,"1_z"]
+		\end{tikzcd}
+
+		\begin{itemize}
+			\onslide<2->{\item Objects}
+			      \onslide<3->{\item Morphisms}
+			      \onslide<4->{\item Composition}
+			      \onslide<5->{\item Identities}
+		\end{itemize}
+	\end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Category Axioms}
+	\begin{multicols}{2}
+		\begin{figure}
+			\begin{tikzcd}
+				\only<2->{x}
+				\arrow[visible on=<2->, "f", r]
+				\arrow[visible on=<2->, "gf"', bend right=30, rr]
+				&
+				\only<2->{y}
+				\arrow[visible on=<2->, "g", r]
+				\arrow[visible on=<2->, "hg", bend right=-30, rr]
+				&
+				\only<2->{z}
+				\arrow[visible on=<2->, "h", r]
+				&
+				\only<2->{w}
+			\end{tikzcd}
+			\only<2->{\caption{Associative}}
+		\end{figure}
+		\begin{figure}
+			\begin{tikzcd}
+				\only<3->{x}
+				\arrow[visible on=<3->, "1_x", r]
+				\arrow[visible on=<3->, "f"', dr]
+				&
+				\only<3->{x}
+				\arrow[visible on=<3->, "f", d]
+				\\
+				&
+				\only<3->{y}
+			\end{tikzcd}
+			\begin{tikzcd}
+				\only<3->{x}
+				\arrow[visible on=<3->, "f", r]
+				\arrow[visible on=<3->, "f"', dr]
+				&
+				\only<3->{y}
+				\arrow[visible on=<3->, "1_y", d]
+				\\
+				&
+				\only<3->{y}
+			\end{tikzcd}
+			\only<3->{\caption{Unital}}
+		\end{figure}
+	\end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Examples}
+	\pause
+	\begin{itemize}
+		\item \cat{Set}: Sets and Functions \pause
+		\item \cat{Grp}: Groups and Homomorphisms \pause
+		\item \cat{Top}: Spaces and Continuous Functions
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Groups as Categories}
+
+	\pause
+
+	Take a group $G$. Make a category $\GG$: \pause
+	\begin{itemize}
+		\item Objects\only<4->{: There is a single object, $*$.}
+		\item Morphisms\only<5->{: For each $x\in G$, there is a morphism
+			      $\mathbbm{x}$.}
+		\item Composition\only<6->{: Composition is the group multiplication.}
+		\item Identities\only<7->{: The identity $1_*$ is the morphism
+			      $\mathbbm{e}$.}
+	\end{itemize}
+
+	\uncover<8->{Moral: not all categories have structured sets for objects and
+		structure-preserving functions for morphisms.}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Isomorphisms}
+
+	\pause
+
+	Goal: generalize bijections, group isomorphisms, homeomorphisms etc. \pause
+
+	\begin{defn}
+		A morphism $f: x\rightarrow y$ is an \emph{isomorphism} when there exists an
+		\emph{inverse morphism} $g: y\rightarrow x$ such that
+		$$fg=1_y\quad\text{and}\quad gf = 1_x.$$
+	\end{defn}
+	\pause
+
+	What are isomorphisms in $\GG$? \pause Everything!
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Groupoids}
+
+	What are isomorphisms in $\GG$? Everything! \pause
+
+	Let's generalize! \pause
+
+	\begin{defn}
+		A \emph{groupoid} is a category in which every morphism is an isomorphism.
+	\end{defn}
+
+	\pause
+\end{frame}
+
+
+\usetikzlibrary{decorations.markings}
+
+\newcommand{\pathA}{(2, 2) .. controls (3,2) and (3, 1.5) .. (4, 1.5)}
+\newcommand{\pathB}{(4, 1.5) .. controls (5, 1.5) and (5,2) .. (6, 2)}
+\newcommand{\pathC}{(6, -2) .. controls (5,-2) and (5, -1.5) .. (4, -1.5)}
+\newcommand{\pathD}{(4, -1.5) .. controls (3, -1.5) and (3,-2) .. (2, -2)}
+
+\begin{frame}[fragile]
+	\frametitle{Topology??}
+	\begin{adjustbox}{max totalsize={.9\textwidth}{.7\textheight},center}
+		\begin{tikzpicture}
+			% outer shape
+			\filldraw[fill=black, fill opacity=0.2, draw=black, visible on=<2-3>] (0, 0) arc(180:90:2) --
+			\pathA --
+			\pathB --
+			(6, 2) arc(90:0:2) --
+			(8, 0) arc(360:270:2) --
+			\pathC --
+			\pathD --
+			(2, -2) arc(270:180:2)
+			;
+
+			% inner holes
+			\filldraw [visible on=<2-3>, fill=white] (2,0) circle (1);
+			\filldraw [visible on=<2-3>, fill=white] (6,0) circle (1);
+
+			% paths
+			\coordinate (x) at (3.4, 0.6);
+			\coordinate (y) at (4.6, -0.6);
+			\node [visible on=<3->, circle, fill, inner sep=2pt] at (x) {};
+			\draw[visible on=<3->, <->] ([shift=(37:1.5)]2,0) arc(37:370:1.5);
+			\draw[visible on=<3->, <-] (3.65, 0.8) .. controls (4,1) and (5,1.5) .. (6, 1.5);
+			\draw[visible on=<3->, <-] (4.8, -0.83) .. controls (5.2,-1.2) and (5.3, -1.5) .. (6, -1.5);
+			\draw[visible on=<3->] ([shift=(270:1.5)]6,0) arc(270:450:1.5);
+
+			\node [visible on=<3->, circle, fill, inner sep=2pt] at (y) {};
+			\draw[visible on=<3->, <->] (3.6, 0.4) -- (4.4, -0.4);
+
+		\end{tikzpicture}
+	\end{adjustbox}
+
+	\uncover<5->{Some dots and arrows between them?? That sounds like..}
+
+	\uncover<6->{a category!}
+
+	\uncover<7->{If you relax the requirement that paths in the fundamental group
+		are loops, you get \emph{the fundamental groupoid}.}
+\end{frame}
+\end{document}

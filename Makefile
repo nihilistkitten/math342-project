@@ -1,6 +1,8 @@
-project.pdf: project.tex *.tikz
-	latexmk -pdflua -halt-on-error project.tex
+all: project.pdf presentation.pdf
+
+%.pdf: %.tex *.tikz
+	latexmk -pdflua -halt-on-error $<
 
 clean:
-	-rm project.pdf
+	-rm -f *.snm *.nav *.vrb *.bbl
 	latexmk -c
