@@ -169,7 +169,9 @@
 \def\monic{\rightarrowtail}
 \def\epic{\twoheadrightarrow}
 \def\pathto{\rightsquigarrow}
+\def\Aut{\text{Aut}}
 
+\newcommand{\punctuation}[1]{\makebox[0pt][l]{#1}}
 \newcommand{\cat}[1]{{\normalfont\texttt{#1}}}
 \newcommand{\op}[1]{{{#1}^{\cat{op}}}}
 \newcommand{\opc}[1]{\op{\cat{#1}}}
@@ -180,7 +182,7 @@
 % \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 % \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 
-\title{ Higher Category Theory by Way of Topology}
+\title{The Fundamental Groupoid}
 
 \author{Riley Shahar}
 
@@ -195,7 +197,7 @@
 
 
 \begin{abstract}
-	TODO
+	% TODO: abstract
 \end{abstract}
 
 
@@ -203,12 +205,11 @@
 
 \section{Introduction}
 
-TODO
+% TODO: introduction
 
-After introducing some introductory category theory in \Cref{categories}, we
-construct the fundamental groupoid in \Cref{the fundamental groupoid}. This
-motivates natural transformations in \Cref{natural transformations}, in turn
-leading to higher category theory in \Cref{higher categories}.
+After introducing some basic category theory in \Cref{categories}, we construct
+the fundamental groupoid in \Cref{the fundamental groupoid}. This motivates
+natural transformations in \Cref{natural transformations}.
 
 \section{Categorical Preliminaries}\label{categories}
 
@@ -236,7 +237,7 @@ category theory. Except where noted, I follow \cite[Sections 1.1-1.3]{Riehl}.
 	\end{itemize}
 	This data must be \emph{associative} and \emph{unital}, which is to say,
 	\begin{itemize}
-		\item (Associativity) For composition-compatible triplet, i.e.
+		\item (Associativity) For each composition-compatible triplet, i.e.
 		      $x\xrightarrow{f}y \xrightarrow{g}z\xrightarrow{h}w$, we have $h(gf) =
 			      (hg)f$. We write merely $hgf$.
 		\item (Unital) For any $f: x\rightarrow y$, we have $1_yf = f = f1_x$.
@@ -269,6 +270,7 @@ category theory. Except where noted, I follow \cite[Sections 1.1-1.3]{Riehl}.
 				\arrow["f", from=1-1, to=1-2]
 				\arrow["1_y", from=1-2, to=2-2]
 				\arrow["f"', from=1-1, to=2-2]
+				\punctuation{.}
 			\end{tikzcd}
 		\end{multicols}
 	\end{figure}
@@ -290,16 +292,16 @@ category theory. Except where noted, I follow \cite[Sections 1.1-1.3]{Riehl}.
 		\item $\cat{Top}$ is the category of topological spaces and continuous
 		      functions.
 		\item For any field $\Bbbk$, $\cat{Vect}_\Bbbk$ is the category of vector
-		      spaces over $k$ and linear maps.
+		      spaces over $\Bbbk$ and linear maps.
 	\end{itemize}
 \end{ex}
 
-These examples demonstrate the need for the word "collection" in the
+These examples demonstrate the need for the word ``collection'' in the
 definition of a category: there is no set of all sets, for example. In general,
 we'll avoid detailing the set-theoretic issues here.
 
-\begin{defn} A category is \emph{small} if its morphisms
-	form a set. A category is \emph{locally small} if, for each pair of objects $x,
+\begin{defn} A category is \emph{small} when its morphisms
+	form a set. A category is \emph{locally small} when, for each pair of objects $x,
 		y$, the morphisms $\cat{C}(x, y)$ forms a set. \end{defn}
 
 \begin{rem}
@@ -320,9 +322,9 @@ shows, these are far from the only kind of category.
 		      morphisms.
 		\item The \emph{trivial category} is the category with one object and only
 		      its identity morphism.
-		\item A set $X$ can be represented as a category whose objects correspond with the elements
-		      of $X$ and which has only identity morphisms. A category with only
-		      identity morphisms is called \emph{discrete}.
+		\item A set $X$ can be represented as a category whose objects correspond
+		      with the elements of $X$ and which has only identity morphisms. A category
+		      with only identity morphisms is called \emph{discrete}.
 		\item A group $G$ can be represented as a category with one object whose
 		      morphisms correspond with the element of $G$, with composition
 		      determined by multiplication. Following \cite{Porter}, we call this
@@ -367,11 +369,11 @@ sharing the following example:
 \end{ex}
 
 A chiefly important kind of morphism is the \emph{isomorphism}, which (as in
-most algebric contexts) suggests a fundamental similarity between its domain and
+most algebraic contexts) suggests a fundamental similarity between its domain and
 codomain.
 
 \begin{defn}
-	A morphism $f: x\rightarrow y$ is an \emph{isomorphism} if there is a morphism
+	A morphism $f: x\rightarrow y$ is an \emph{isomorphism} when there is a morphism
 	$g: y\rightarrow x$ such that $gf = 1_x$ and $fg = 1_y$. We call $g$ the
 	\emph{inverse} of $f$ and write $g = f^{-1}$. We say $x$ and $y$ are
 	\emph{isomorphic} and write $x\cong y$.
@@ -390,6 +392,37 @@ codomain.
 		      this fact corresponds to anti-symmetry of the relation.
 	\end{itemize}
 \end{ex}
+
+\begin{lemma}\label{inverses are unique}
+	Let $f: x\rightarrow y$ be an isomorphism with inverses $g$ and $h$. Then $g = h$.
+\end{lemma}
+
+\begin{proof}
+	We have $g = 1_xg = (hf)g = h(fg) = h1_y = h.$
+\end{proof}
+
+\begin{notn}
+	\Cref{inverses are unique} justifies writing the inverse of an isomorphism $f$
+	as $f^{-1}$, since it guarantees this specifies a unique morphism.
+\end{notn}
+
+Further, as we expect:
+
+\begin{prop}\label{isomorphism is equivalence}
+	Isomorphism forms an equivalence relation on the class of objects in
+	a category $\cat{C}$.
+\end{prop}
+
+\begin{proof} We need to show:
+	\begin{itemize}
+		\item Reflexivity. The identity $1_x$ is an isomorphism $x\rightarrow x$.
+		\item Symmetry. For $f: x\rightarrow y$ an isomorphism, $f^{-1}$ is an
+		      isomorphism $y\rightarrow x$, with inverse $f$.
+		\item Transitivity. For $f: x\rightarrow y$ and $g: y\rightarrow z$
+		      isomorphisms, $gf$ is an isomorphism $x\rightarrow z$, with inverse
+		      $f^{-1}g^{-1}$. \qedhere
+	\end{itemize}
+\end{proof}
 
 In a locally small category $\cat{C}$, where $f: x\rightarrow y$ is any morphism
 and $z$ is an ambient object, we can define maps $f_*: \cat{C}(z, x)\rightarrow
@@ -420,14 +453,14 @@ of these maps.
 		context of the \emph{opposite category} of $\cat{C}$, but this is outside our
 		scope. See \cite[Lemma 1.2.3]{Riehl} for such a proof.}.
 
-	Let $f$ be an isomorphism with inverse $g$. We show $g_*$ is an inverse of
+	Let $f$ be an isomorphism. We show $f^{-1}_*$ is an inverse of
 	$f_*$. In particular, for any morphisms $h: z\rightarrow x$ and $k:
 		z\rightarrow y$, we have that
-	$$g_*(f_*(h)) = gfh = 1_Xh = h
+	$$f^{-1}_*(f_*(h)) = f^{-1}fh = 1_Xh = h
 		\quad
 		\text{ and }
 		\quad
-		f_*(g_*(k)) = fgk = 1_Yk = k.$$
+		f_*(f^{-1}_*(k)) = ff^{-1}k = 1_Yk = k.$$
 
 	Conversely, let $f_*$ be bijective. Letting $z = y$, by surjectivity there is
 	some $g\in\cat{C}(y, x)$ such that $1_y = f_*(g) = fg$. But now letting $z =
@@ -456,30 +489,40 @@ functors answer the obvious question: what are the morphisms between categories?
 	\begin{itemize}
 		\item For each $f\in\Map{C}$, $\dom(Ff) = F(\dom(f))$ and $\cod(Ff) =
 			      F(\cod(f))$.
-		\item For each composition-compatible pair $f,g\in\Map{C}$, $Fg\cdot Ff =
-			      F(g\cdot f)$.
+		\item For each composition-compatible pair $f,g\in\Map{C}$, $(Fg)(Ff) =
+			      F(gf)$.
 		\item For each $x\in\Obj{C}$, $F(1_x) = 1_{Fx}$.
 	\end{itemize}
 \end{defn}
 
-\begin{ex}
+\begin{ex}\label{functors}
 	Many common constructions are functors:
 	\begin{itemize}
+		\item On any category $\cat{C}$ there is an \emph{identity functor}
+		      $1_\cat{C}$.
 		\item The power set defines a functor $\cP:
 			      \cat{Set}\rightarrow\cat{Set}$ which takes a morphism $f$ to its
 		      action via images, i.e. $\cP(f)(A) = f(A)$.
-		\item On a category $\cat{C}$ like those in \Cref{concrete categories},
-		      say $\cat{Grp}$, the \emph{forgetful functor}
-		      $\cat{C}\rightarrow\cat{Set}$ sends an object to its underlying set
-		      and a morphism to its underlying set-function,
-		      "forgetting" the algebraic structure.
+		\item On a category $\cat{C}$ like those in \Cref{concrete categories}, the
+		      \emph{forgetful functor} $\cat{C}\rightarrow\cat{Set}$ sends an object to
+		      its underlying set and a morphism to its underlying set-function,
+		      ``forgetting'' the algebraic structure.
 		\item The free group defines a functor $\cat{Set}\rightarrow\cat{Grp}$ which
 		      sends a set to its free group and a map to its letter-wise action on
 		      words.
 		\item A group action of a group $G$ on a set $A$ can be regarded as a functor
-		      $\GG\rightarrow\cat{Set}$ wich sends the single object of $\GG$ to $A$ and
+		      $\GG\rightarrow\cat{Set}$ which sends the single object of $\GG$ to $A$ and
 		      a morphism to the endofunction defined by that element's action on
-		      $A$.
+		      $A$. In fact, the funtoriality axioms correspond precisely to the
+		      axioms of group action.
+		\item The construction $f_*$ from \Cref{isomorphism characterization} gives
+		      a functor $\cat{C}(z, -): \cat{C}\rightarrow\cat{Set},$ called the
+		      \emph{covariant functor represented by $z$}, which sends any object $x$ to
+		      $\cat{C}(z, x)$\footnote{The analogous functor for $f^*$ requires a
+			      little more machinery in the form of \emph{contravariant functors}, outside
+			      our scope. These representation functors are critically important
+			      for tools central category-theoretic tools such as \emph{universal
+				      properties} and the \emph{Yoneda lemma}. See \cite[Chapter 2]{Riehl}.}.
 	\end{itemize}
 \end{ex}
 
@@ -489,7 +532,7 @@ functors answer the obvious question: what are the morphisms between categories?
 \end{thm}
 
 \begin{proof}
-	Let $g: y\rightarrow x$ invert $f$. Then $$(Fg)(Ff) = F(gf) = F1_x = 1_{Fx},$$
+	We have $$(Ff^{-1})(Ff) = F(f^{-1}f) = F1_x = 1_{Fx},$$
 	and the same works on the other side.
 \end{proof}
 
@@ -498,18 +541,42 @@ whose morphisms are functors\footnote{Categories in \cat{Cat} must be locally
 	small, for set-theoretic reasons. It is common, e.g. in \cite{Riehl}, to call
 	this category $\cat{CAT}$, to distinguish it from the category of small
 	categories, which in turn is called $\cat{Cat}$. As we ignore these details, we
-	use the more convenient notation.}. This allows us to define isomorphic
-categories straightforwardly:
+	use the more convenient notation.}. Composition of functors is defined in the
+obvious way. This allows us to define isomorphic categories straightforwardly:
 
 \begin{defn}
-	Two categories $\cat{C}$ and $\cat{D}$ are \emph{isomorphic} if there is a
+	Two categories $\cat{C}$ and $\cat{D}$ are \emph{isomorphic} when there is a
 	functor $F: \cat{C}\rightarrow\cat{D}$ which is an isomorphism in $\cat{Cat}$.
 \end{defn}
 
 We will see later, in \Cref{fundamental groupoid is not homotopy invariant}, that
 this definition is generally too restrictive. That will motivate our discussion of
 \emph{natural transformations} in \Cref{natural transformations}, where we will
-define a more useful notion of \emph{equivalence of categories}.
+define a more useful notion of \emph{equivalence of categories}. One hint at the
+restrictiveness is the following:
+
+\begin{thm}\label{isomorphisms are bijections}\cite[Theorem 6.4.3]{Brown}
+	A functor $F: \cat{C}\rightarrow\cat{D}$ between small categories is an
+	isomorphism if and only if it is a bijection on both objects and
+	morphisms.
+\end{thm}
+
+\begin{proof}
+	Let $F$ be an isomorphism with inverse $G$. For any $x\in\Obj{C}$, $(GF)x =
+		1_\cat{C}x = x$; this shows $F$ is invertible, hence bijective, as a function
+	on $\Obj{C}$. The same works for morphisms.
+
+	Conversely, let $F$ be a bijection on both objects and morphisms, with inverse
+	$G$. We need to check that $G$ is a functor and an inverse of $F$. The latter
+	is easy, since it is an inverse on both objects and morphisms.
+
+	To check functoriality, it suffices to check images of $F$, by surjectivity.
+	\begin{itemize}
+		\item Let $x\in\Obj{C}$. By functoriality of $F$, $G1_{Fx} = 1_x$.
+		\item Let $f,g\in\Map{C}$ be composition-compatible. Then $$G(FgFf) = G(Fgf)
+			      = gf = GFg\cdot GFf,$$ as desired. \qedhere
+	\end{itemize}
+\end{proof}
 
 \subsection{Groupoids}\label{sec:groupoids}
 
@@ -541,23 +608,21 @@ well-definideness of multiplication. Indeed, there is a purely algebraic picture
 of groupoids defined in terms of partial functions, but the categorical one will
 be sufficient for our needs. For a more complete discussion, see \cite{Brown}.
 
-\begin{ex}\label{groupoids}
-	The following are examples of groupoids:
+\begin{defn}\label{groupoids}
+	We can define several common kinds of groupoids:
 	\begin{itemize}
-		\item Per the above discussion, a group is a groupoid with one element.
-		\item The categorification of a set, from \Cref{concrete categories}, is a
-		      groupoid.
-		\item The empty and trivial categories, from \Cref{abstract categories}, are
-		      groupoids.
+		\item A groupoid with one element is a \emph{group}. Per the above
+		      discussion, we can indeed take this as a definition.
 		\item A groupoid with only identity morphisms is a \emph{discrete groupoid}.
+		      Such groupoids correspond bijectively to sets; see \Cref{concrete categories}.
 		\item A groupoid with at least one morphism between any two objects is \emph{connected}.
 		\item A groupoid with precisely one morphism between any two objects is a
 		      \emph{tree groupoid}.
 	\end{itemize}
-\end{ex}
+\end{defn}
 
-Since groupoids are defined as categories, unsurprisingly, the morphisms between
-them are functors:
+Since groupoids are defined as categories, the morphisms between them are
+functors:
 
 \begin{defn}\cite[Section 6.4]{Brown}
 	A \emph{groupoid morphism} is a functor between groupoids.
@@ -576,27 +641,43 @@ Except where noted, I follow \cite[Chapter 6]{Bradley}.
 
 \subsection{Homotopy}\label{sec:homotopy}
 
-Recall that a \emph{homotopy} between continuous functions $f: X\rightarrow Y$
-and $g: X\rightarrow Y$ is a continuous function $H: X\times I\rightarrow Y$
-such that $H(-, 0) = f$ and $H(-, 1) = g$. This homotopy is further a \emph{path
-	homotopy}\footnote{ When the context is unclear, we will call a general homotopy
-	a \emph{free homotopy}, and a homotopy with fixed endpoints a \emph{path
-		homotopy}. } when $X = I$ (so $f$ and $g$ are paths) and when $H(0, -)$ and
-$H(1, -)$ are constant.
+Recall that a \emph{homotopy} between continuous functions $f,g: X\rightarrow Y$
+is a continuous function $H: X\times I\rightarrow Y$ such that $H(-, 0) = f$ and
+$H(-, 1) = g$; in other words, the following diagram commutes:
 
-Two functions are \emph{free homotopic} when there exists a homotopy between
-them. This forms an equivalence relation on the class of continuous functions
-$X\rightarrow Y$; we write $f\simeq g$. When the functions are paths and the
-homotopy is a path homotopy, the paths are \emph{path homotopic} and we write
-$f\simeq_p g$.
+\begin{figure}[H]
+	\centering
+	\begin{tikzcd}
+		X & X\times I & X \\
+		& Y\punctuation{,} &
+		\arrow["i_0", from=1-1, to=1-2]
+		\arrow["i_1", from=1-3, to=1-2, swap]
+		\arrow["f", from=1-1, to=2-2, swap]
+		\arrow["g", from=1-3, to=2-2]
+		\arrow["H", from=1-2, to=2-2]
+	\end{tikzcd}
+\end{figure}
+
+where $i_0$ and $i_1$ are the inclusions at $(-, 0)$ and $(-, 1)$.
+
+This homotopy is further a \emph{path homotopy}\footnote{ When
+	the context is unclear, we will call a general homotopy a \emph{free
+		homotopy}, and a homotopy with fixed endpoints a \emph{path homotopy}. } when $X
+	= I$ (so $f$ and $g$ are paths) and when $H(0, -)$ and $H(1, -)$ are constant.
+
+Two functions are \emph{homotopic} when there exists a homotopy between them. We
+write $f\simeq g$. When the functions are paths and the homotopy is a path
+homotopy, the paths are \emph{path homotopic} and we write $f\simeq_p g$. Both
+are equivalence relations on the class of functions with appropriate domain and
+codomain.
 
 Two spaces $X$ and $Y$ are \emph{homotopy equivalent} when there are maps $f:
 	X\rightarrow Y$ and $g: Y\rightarrow X$ such that $fg\simeq 1_Y$ and $gf\simeq
-	1_X$.
+	1_X$. This is an equivalence relation on the spaces; we write $X\simeq Y$.
 
 We can form the category $\cat{hTop}$ by taking spaces as objects and homotopy
-classes of maps as morphisms. One needs to check that composition "works" in
-this category; this was done in class.
+classes of maps as morphisms. One needs to check that composition is
+well-defined in this category; this was done in class.
 
 \begin{rem} Two spaces are homotopy equivalent precisely they are isomorphic in
 	$\cat{hTop}$. There is a functor $\cat{Top}\rightarrow\cat{hTop}$ that is the
@@ -607,10 +688,10 @@ this category; this was done in class.
 
 \subsection{Construction}
 
-Before defining the fundamental groupoid, there is a nice geometric picture to
-tell. Fix a topological space $X$ and pick some points and paths between those
-points. When you "erase" the other information of the underlying
-space, you get several points and a bunch of (double-headed) arrows.
+Before defining the fundamental groupoid, there is a nice geometric intuition. Fix
+a topological space $X$ and pick some points and paths between those points.
+When you ``erase'' the other information of the underlying space, you get
+several points and a bunch of (double-headed) arrows.
 
 \begin{figure}[H]
 	\centering
@@ -620,18 +701,18 @@ space, you get several points and a bunch of (double-headed) arrows.
 \end{figure}
 
 This looks suspiciously like a groupoid---in particular, each of the arrows are
-double-headed, and hence "invertible". The issue is that we don't necessarily
+double-headed, and hence ``invertible''. The issue is that we don't necessarily
 see the inverses or composites when we just take some points and some paths.
 
-We'll return to this intuition of the fundamental groupoid "forgetting" some of
+We'll return to this intuition of the fundamental groupoid ``forgetting'' some of
 the underlying geometry of the space. More immediately, however, this view
 strongly suggests that when we take all the path classes from our underlying space,
 we should get back a groupoid.
 
 \begin{defn}[Fundamental Groupoid]
 	The \textit{fundamental groupoid} $\Pi_1X$ of a space $X$ is the category
-	whose objects are points of $X$ and whose morphisms are path homotopy classes
-	of paths in $X$.
+	whose objects are the points of $X$ and whose morphisms are the path homotopy
+	classes of paths in $X$.
 \end{defn}
 
 Specifically, let $x,y,z\in X$, $f$ a path from $x$ to $y$, and $g$ a path from
@@ -652,10 +733,10 @@ write down the domain and codomain of our morphisms.
 \begin{ex}\cite[p. 213]{Brown}
 	We can immediately compute a few fundamental groupoids.
 	\begin{itemize}
-		\item The fundamental groupoid of a convex space is a tree groupoid (defined
-		      in \Cref{groupoids}). This corresponds to the fact that any two paths with
-		      the same endpoints in such a space are homotopic via the straight line
-		      homotopy.
+		\item The fundamental groupoid of a convex subspace of $\RR^n$ is a tree
+		      groupoid (see \Cref{groupoids}). This corresponds to the fact that
+		      any two paths with the same endpoints in such a space are homotopic via
+		      the straight line homotopy.
 		\item The fundamental groupoid of a totally disconnected space is a discrete
 		      groupoid. This corresponds to the fact that the only paths in such spaces
 		      are the constant paths.
@@ -678,8 +759,10 @@ claim it is:
 		      class.
 		\item Composition is associative, since concatenation is associative up to
 		      homotopy.
-		\item Every object $x$ has $[c_x]$ as an identity.
-		\item Every morphism $[f]$ has $[\bar{f}]$ as an inverse.
+		\item Every object $x$ has $[c_x]$ as an identity, where $c_x$ is the
+		      constant path at $x$.
+		\item Every morphism $[f]$ has $[\bar{f}]$ as an inverse, where $\bar{f}$ is
+		      $f$ traversed in reverse.
 	\end{itemize}
 
 	The first three say that $\Pi_1X$ is a category, and the last says that it
@@ -695,22 +778,19 @@ Accordingly, we define
 	[\gamma]              & \mapsto [f\circ\gamma].
 \end{align*}
 
-% TODO: picture
-
 This mapping is well-defined because composition preserves homotopy equivalence.
 
-% TODO: output is a homomorphism
-
 \begin{prop}\label{fundamental groupoid is a functor}
-	$\Pi_1$ is a functor.
+	The fundamental groupoid $\Pi_1$ is a functor.
 \end{prop}
 
 \begin{proof}
 	Again, much of this work was done in class.
 	\begin{itemize}
-		\item $\Pi_1$ respects composition, since composition is associative.
-		\item $\Pi_1$ respects identities, since composing the identity fixes homotopy classes. \qedhere
+		\item It respects composition, since composition is associative.
+		\item It respects identities, since composing the identity fixes homotopy classes. \qedhere
 	\end{itemize}
+	% TODO: spell this out more
 \end{proof}
 
 This result is an improvement over the fundamental group, where we needed a
@@ -732,7 +812,9 @@ of a space than the fundamental group does.
 	the fundamental groupoid is a \emph{not} a homotopy invariant. For instance,
 	since objects of the fundamental groupoid are in bijection with elements of
 	the underlying space, the fundamental groupoid of $D^n$ has uncountably many
-	objects, whereas the fundamental groupoid of the point has only one. \end{rem}
+	objects, whereas the fundamental groupoid of the point has only one, hence
+	they are not isomorphic by \Cref{isomorphisms are bijections}; nevertheless,
+	$D^n$ is contractible. \end{rem}
 
 This unfortunate fact suggests an issue with our notion of isomorphism of
 categories: it requires objects to be in bijection, which is far too strong to
@@ -740,7 +822,7 @@ express homotopy invariants. There is a more natural notion, equivalence of
 categories, somewhat analogous to homotopy equivalence, which requires some
 additional machinery to develop.
 
-\section{Natural Transformations and 2-Categories}
+\section{Equivalence of Categories}
 \label{natural transformations}
 
 If we want our categorical constructions to play nicely with homotopy, it will
@@ -764,8 +846,9 @@ following definition:
 	object $x\in\Obj{C}$, a morphism $\alpha_x: F_x\rightarrow G_x\in \cat{D}$,
 	called the \emph{components} of $\alpha$.
 
-	This data must preserve morphisms in $\cat{C}$, in the sense that for any
-	morphism $f: x\rightarrow y\in\cat{C}$, the following square must commute:
+	This data must be compatible with morphisms in $\cat{C}$, in the sense that
+	for any morphism $f: x\rightarrow y\in\cat{C}$, the following square must
+	commute:
 	\begin{figure}[H]
 		\centering
 		\begin{tikzcd}
@@ -775,6 +858,7 @@ following definition:
 			\arrow["\alpha_x", from=1-1, to=1-2]
 			\arrow["\alpha_y", from=2-1, to=2-2, swap]
 			\arrow["Gf"', from=1-2, to=2-2, swap]
+			\punctuation{.}
 		\end{tikzcd}
 	\end{figure}
 \end{defn}
@@ -782,8 +866,26 @@ following definition:
 Thinking of natural transformations as categorical analogues of homotopy will be
 critical for what is to come. The commutative square above is analogous to the
 requirement that a homotopy behaves as $f$ at $t=0$ and as $g$ at $t=1$; we
-require that the transformation behaves as $F$ "before" the transformation and
-as $G$ "after" the transformation.
+require that the transformation behaves as $F$ ``before'' the transformation and
+as $G$ ``after'' the transformation.
+
+\begin{ex} The following are examples of natural transformations:
+	\begin{itemize}
+		\item For any functor $F: \cat{C}\rightarrow\cat{D}$, there is an \emph{identity
+			      natural transformation} $1_F: F\nat F$ whose components $(1_F)_x$ are each
+		      the identity $1_{Fx}$.
+		\item There is a natural transformation $\eta: 1_{\cat{Set}}\nat\cP$,
+		      where $\cP$ is the power set functor, where for any set $X$ we have
+		      $\eta_X(x) = \{x\}$.
+		\item Let $G$ be a group acting on sets $X$ and $Y$. Recall from
+		      \Cref{functors} that this can be thought of as a pair of functors
+		      $\GG\rightarrow\cat{Set}$. Since there is only one object of $\GG$, a
+		      natural transformation between these functors consists of a single
+		      function $X\rightarrow Y$. Naturality implies that this function preserves
+		      the structure of the action: algebraically, this is called
+		      \emph{$G$-equivariance}.
+	\end{itemize}
+\end{ex}
 
 An alternative definition makes the translation even clearer. Let $\mathbbm{2}$
 be the category with two objects, $0$ and $1$, and a single non-identity
@@ -797,7 +899,7 @@ commutes:
 	\centering
 	\begin{tikzcd}
 		\cat{C} & \cat{C}\times\mathbbm{2} & \cat{C} \\
-		& \cat{D} &
+		& \cat{D}\punctuation{.} &
 		\arrow["i_0", from=1-1, to=1-2]
 		\arrow["i_1", from=1-3, to=1-2, swap]
 		\arrow["F", from=1-1, to=2-2, swap]
@@ -806,70 +908,282 @@ commutes:
 	\end{tikzcd}
 \end{figure}
 
-Here $i_0$ and $i_1$ are the obvious inclusion functors. (TODO: proof from
-\cite[Lemma 1.5.1]{Riehl}.)
+Here $i_0$ and $i_1$ are the obvious inclusion functors. For a proof, see
+\cite[Lemma 1.5.1]{Riehl}.
 
-One key difference between homotopy and natural transformations is that
-homotopies are always invertible, in the sense that for a homotopy $H$ from $f$
-to $g$, $H(-, 1-t)$ is a homotopy from $g$ to $h$. This key fact means
-homotopies can be used to define an equivalence relation on continuous maps.
-Since we are primarily concerned with the special case of groupoids, in which
-"everything" is invertible, this ought to be a non-issue.
+We can compose natural transformation in two ways.
 
-\begin{defn}
-	A \emph{natural isomorphism} is a natural transformation whose components are
-	each isomorphisms.
-\end{defn}
-
-\begin{rem}
-	Any natural transformation into a groupoid is a natural isomorphism.
-\end{rem}
-
-\begin{thm}\label{natural isomorphisms are invertible}
-	Let $F,G: \cat{C}\rightarrow\cat{D}$ be functors, and $\alpha$ a natural
-	isomorphism between them. For each $x\in\cat{D}$, let $\beta_x$ be the
-	inverse of $\alpha_x$. Then the $\beta_x$ collect into a natural
-	isomorphism, $\beta$, between $\cat{D}$ and $\cat{C}$.
-\end{thm}
+\begin{lemma}\label{vertical composition}
+	Let $\alpha: F\nat G$ and $\beta: G\nat H$ be natural transformations with
+	components $\alpha_x$ and $\beta_x$, respectively. Then the components
+	$\beta_x\alpha_x$ assemble into the $\beta\alpha: F\nat H$.
+\end{lemma}
 
 \begin{proof}
-	That $\beta$ is an isomorphism follows because inverses of isomorphisms are
-	isomorphisms. We need to show that $\beta$ is a natural transformation, i.e.
-	that for any $x, y\in\cat{C}$, the following square commutes:
-
+	Gluing together the commutative diagrams from \Cref{natural transformation}
+	for $\alpha$ and $\beta$ respectively, we obtain:
 	\begin{figure}[H]
 		\centering
 		\begin{tikzcd}
-			Gx & Fx \\
-			Gy & Fy
-			\arrow["Gf", from=1-1, to=2-1, swap]
-			\arrow["\beta_x", from=1-1, to=1-2]
-			\arrow["\beta_y", from=2-1, to=2-2, swap]
-			\arrow["Ff", from=1-2, to=2-2]
+			Fx & Gx & Hx \\
+			Fy & Gy & Hy \punctuation{.}
+			\arrow["Ff", from=1-1, to=2-1, swap]
+			\arrow["\alpha_x", from=1-1, to=1-2]
+			\arrow["\alpha_y", from=2-1, to=2-2, swap]
+			\arrow["Gf"', from=1-2, to=2-2, swap]
+			\arrow["\beta_x", from=1-2, to=1-3]
+			\arrow["\beta_y", from=2-2, to=2-3, swap]
+			\arrow["Hf"', from=1-3, to=2-3, swap]
 		\end{tikzcd}
 	\end{figure}
-
-	But this exactly comes from replacing $\alpha_x$ and $\alpha_y$ with their
-	inverses $\beta_x$ and $\beta_y$ in the square from \Cref{natural
-		transformation}, which we can do by definition of isomorphism.
-
+	The outer rectangle is exactly the required result for $\beta\alpha$.
 \end{proof}
+
+\begin{lemma}\label{horizontal composition}
+	Let $F,F': \cat{C}\rightarrow\cat{D}$ and $G,G': \cat{D}\rightarrow\cat{E}$,
+	with $\alpha: F\nat F'$ and $\beta: G\nat G'$. Then there is a natural
+	transformation $\beta*\alpha: GF\nat G'F'$ with components given by the
+	following commutative square:
+	\begin{figure}[H]
+		\centering
+		\begin{tikzcd}
+			GFx & & GF'x \\
+			\\
+			G'Fx & & G'F'x
+			\arrow["\beta_{Fx}", from=1-1, to=3-1, swap]
+			\arrow["G\alpha_x", from=1-1, to=1-3]
+			\arrow["G'\alpha_x", from=3-1, to=3-3, swap]
+			\arrow["\beta_{F'x}"', from=1-3, to=3-3, swap]
+			\arrow["(\beta*\alpha)_x", from=1-1, to=3-3, dashed]
+			\punctuation{.}
+		\end{tikzcd}
+	\end{figure}
+\end{lemma}
+
+\begin{proof}
+	Commutativity of this square is just naturality of $\beta$, hence the
+	components are well-defined. Noting that functors preserve composites and
+	hence commutative diagrams, and gluing together the commutative diagrams for
+	$G\alpha$ and $\beta$ respectively, we obtain:
+	\begin{figure}[H]
+		\centering
+		\begin{tikzcd}
+			GFx & GF'x & G'F'x \\
+			GFy & GF'y & G'F'y \punctuation{.}
+			\arrow["GFf", from=1-1, to=2-1, swap]
+			\arrow["G\alpha_x", from=1-1, to=1-2]
+			\arrow["G\alpha_y", from=2-1, to=2-2, swap]
+			\arrow["GF'f"', from=1-2, to=2-2, swap]
+			\arrow["\beta_{F'x}", from=1-2, to=1-3]
+			\arrow["\beta_{F'y}", from=2-2, to=2-3, swap]
+			\arrow["G'F'f"', from=1-3, to=2-3, swap]
+		\end{tikzcd}
+	\end{figure}
+	The outer rectangle is exactly the required result for $\beta*\alpha$.
+\end{proof}
+
+\begin{notn}
+	We call $\beta\alpha$ of \Cref{vertical composition} the \emph{vertical
+		composite} and $\beta*\alpha$ of \Cref{horizontal composition} the
+	\emph{horizontal composite}.
+\end{notn}
+
+\begin{rem}
+	There are two ways to compose homotopies: when they share a common function,
+	and when they are between composition-compatible functions. There are two ways
+	to compose natural transformations: when they share a common functor, and when
+	they are between composition-compatible functors.
+\end{rem}
+
 
 \subsection{Equivalence of Categories}
 
-TODO.
+One key difference between homotopy and natural transformations is that
+homotopies are always invertible, in the sense that for a homotopy $H$ from $f$
+to $g$, $H(-, 1-t)$ is a homotopy from $g$ to $f$. This key fact means
+homotopies can be used to define an equivalence relation on continuous maps.
+Since we are primarily concerned with the special case of groupoids, in which
+``everything'' is invertible, this ought to be a non-issue.
 
-\subsection{The 2-Category of Categories.}\label{1cat}
+\begin{defn}
+	A \emph{natural isomorphism} is a natural transformation whose components are
+	each isomorphisms. Two functors $F$ and $G$ are \emph{naturally isomorphic}
+	when there exists a natural isomorphism $\alpha: F\nat G$. We write $F\cong
+		G$.
+\end{defn}
 
-TODO.
+\begin{rem}
+	Any natural transformation between functors into a groupoid is a natural
+	isomorphism.
+\end{rem}
 
-\section{Higher Categories and Higher Groupoids}\label{higher categories}
+Of course, as we expect:
 
-TODO.
+\begin{prop}\label{natural isomorphism is equivalence}
+	Natural isomorphism forms an equivalence relation on the class of functors
+	$\cat{C}\rightarrow\cat{D}$.
+\end{prop}
 
-\section{$\infty$-groupoids as spaces}\label{infinity groupoids}
+\begin{proof}
+	The result follows immediately by applying \Cref{isomorphism is equivalence}
+	to each of the components.
+\end{proof}
 
-TODO; not sure I'll have space for this. Following \cite{Porter}.
+With our new machinery in mind, we can define a better equivalence on categories
+than our old notion of isomorphism. Again, we want to work by analogy to
+homotopy equivalence, defined in \Cref{sec:homotopy}. As such:
+
+\begin{defn}\label{equivalence of categories}
+	Two categories $\cat{C}$ and $\cat{D}$ are \emph{equivalent} when there exist
+	functors $F:\cat{C}\rightarrow\cat{D}$ and $G:\cat{D}\rightarrow\cat{C}$ such
+	that $GF\cong 1_\cat{C}$ and $FG\cong 1_\cat{D}$. We write
+	$\cat{C}\simeq\cat{D}$.
+\end{defn}
+
+\begin{prop}\label{equivalence is equivalence}
+	Equivalence of categories forms an equivalence relation on the class of
+	categories.
+\end{prop}
+\begin{proof}
+	We need to show:
+	\begin{itemize}
+		\item Reflexivity. The natural transformation $1_{1_\cat{C}}:
+			      1_\cat{C}\nat1_\cat{C}$ is an equivalence.
+		\item Symmetry. The definition is symmetric: the functors witness both
+		      equivalences.
+		\item Transitivity. Given natural isomorphisms $GF\nat 1_\cat{C}$ and
+		      $G'F'\nat1_\cat{D}$, apply horizontal composition to produce an
+		      isomorphism $GG'F'F\nat G1_\cat{D}F=GF\nat 1_\cat{C}$. \qedhere
+	\end{itemize}
+\end{proof}
+
+\begin{prop}\label{one object equivalence is isomorphism}
+	Suppose $\cat{C}$ and $\cat{D}$ are small\footnote{The result is true for
+		larger categories, but the only proof I've seen requires some machinery
+		outside our scope.} and each have one object. If $\cat{C}\simeq\cat{D}$, then
+	$\cat{C}\cong\cat{D}$.
+\end{prop}
+
+\begin{proof}
+	Let $c$ and $d$ be the respective objects. Let $F:\cat{C}\rightarrow\cat{D}$
+	and $G: \cat{D}\rightarrow\cat{C}$ be equivalences, with $\alpha:
+		GF\nat 1_\cat{C}$ a natural isomorphism. Then $Fc = d$ and $Gd = c$;
+	thus $F$ and $G$ are bijective on objects. By \Cref{isomorphisms are
+		bijections}, it remains to show that $F$ and $G$ are bijective on morphisms.
+
+	The data of $\alpha$ is an isomorphism $\alpha_c: c\rightarrow c$. Naturality
+	asserts that for each $f\in\cat{C}(c, c)$, $GFf = \alpha_cf\alpha_c^{-1}$. By
+	\Cref{isomorphism characterization}, precomposition by $\alpha_c$ and
+	postcomposition by $\alpha_c^{-1}$ induce bijections on $\cat{C}(c, c)$;
+	therefore $GF$ also induces such a bijection. Therefore $F$ is injective on
+	morphisms and $G$ is surjective on morphisms. Treating the other natural
+	isomorphism identically gives the symmetric result.
+\end{proof}
+
+\subsection{The Fundamental Groupoid, Redux}
+
+Finally, we can apply our new technology to show the isomorphism of
+path-connected fundamental groups and the homotopy invariance of the fundamental
+groupoid. Here I largely follow \cite[Section 6.5]{Brown}.
+
+\begin{defn}
+	Let $\cat{C}$ be a category and $x\in \Obj{C}$. The \emph{automorphism group
+		of $x$}, $\Aut(g)$, is the subcategory of $\cat{C}$ whose single object is $x$ and whose
+	morphisms are precisely the isomorphisms $x\rightarrow x$.
+\end{defn}
+
+Observe that we still have categorical structure on $\Aut(g)$, since the
+composition of isormorphisms is an isormophism, by \Cref{isomorphism is
+	equivalence}. By \Cref{groupoids}, this category is indeed a group. Note that if
+$\cat{C}$ is a groupoid, the automorphism group of $x$ is just the set
+$\cat{C}(x, x)$ together with the composition structure.
+
+\begin{thm}\label{groupoids retract}
+	Let $\cat{G}$  be a connected groupoid with $g\in\Obj{G}$. Then
+	$\Aut(g)\simeq\cat{G}$.
+\end{thm}
+
+\begin{proof}
+	Let $i: \Aut(g)\hookrightarrow\cat{G}$ be the inclusion of $\Aut(g)$ into
+	$\cat{G}$.
+
+	For each object $x\in\cat{G}$, fix\footnote{Here we assume the axiom of
+		choice.} an isormorphism $\alpha_x: g\rightarrow x$, which exists by
+	connectedness; ensure\footnote{This caveat gives us a deformation
+		retraction, instead of just an equivalence.} that $\alpha_g = 1_g$. Let $r:
+		\cat{G}\rightarrow\Aut(g)$ take each object to $g$ and take each (iso)morphism
+	$f: x\rightarrow y$ to $\alpha_y^{-1}f\alpha_x$. Since $\alpha_g = 1_g$, we have
+	$ri = 1_{\Aut(g)}$.
+
+	To see $ir\cong 1_\cat{G}$, collect the $\alpha_x$ into a natural transformation
+	$\alpha: ir\nat1_\cat{G}$. Naturality consists of the following square:
+	\begin{figure}[H]
+		\centering
+		\begin{tikzcd}
+			g & x \\
+			g & y
+			\arrow["\alpha_y^{-1}f\alpha_x", from=1-1, to=2-1, swap]
+			\arrow["\alpha_x", from=1-1, to=1-2]
+			\arrow["\alpha_y", from=2-1, to=2-2, swap]
+			\arrow["f"', from=1-2, to=2-2, swap]
+			\punctuation{,}
+		\end{tikzcd}
+	\end{figure}
+	which trivially commutes.
+\end{proof}
+
+\begin{cor}\label{connected groups are isomorphic}
+	Let $g$ and $h$ be objects in the small connected groupoid $\cat{G}$. Then their
+	automorphism groups are isomorphic.
+\end{cor}
+
+\begin{proof}
+	Noting groups have one object, the result follows from \Cref{groupoids
+		retract}, \Cref{equivalence is equivalence}, and \Cref{one object equivalence
+		is isomorphism}.
+\end{proof}
+
+\begin{cor}
+	Let $x$ and $y$ be points in the path-connected space $X$. Then their
+	fundamental groups are isomorphic.
+\end{cor}
+
+\begin{proof}
+	Observe that the fundamental groupoid of a path-connected space is connected,
+	and that paths in any space form a set, and apply \Cref{connected groups are
+		isomorphic}.
+\end{proof}
+
+Finally, with a more general equivalence on categories, hence also groupoids, in
+hand, our final objective is the homotopy invariance of the fundamental
+groupoid up to equivalence.
+
+\begin{lemma}
+	Let $f,g: X\rightarrow Y$ be continuous. If $f\simeq g$, then
+	$\Pi_1f\cong\Pi_1g$.
+\end{lemma}
+
+	\begin{thm}
+		Let $X\simeq Y$. Then $\Pi_1X\simeq \Pi_1Y$.
+	\end{thm}
+
+	\begin{proof}
+		Let $f: X\rightarrow Y$ and $g: Y\rightarrow X$ be homotopy equivalences, so
+		that $gf\simeq 1_X$ and $fg\simeq 1_Y$. The fundamental groupoid induces
+		groupoid morphisms $$\Pi_1f: \Pi_1X\rightarrow\Pi_1Y\quad\text{and}\quad\Pi_1g:
+			\Pi_1Y\rightarrow\Pi_1X.$$
+		We show these form equivalences $\Pi_1X\simeq \Pi_1Y$. By the lemma, we have
+		that $$\Pi_1g\Pi_1f = \Pi_1 gf\cong \Pi_1{1_X} = 1_{\Pi_1 X};$$ the other
+		direction follows by symmetry of the situation.
+	\end{proof}
+
+
+	\section{2-Categories}
+
+	One can show this straightforwardly. Instead, we will do so by making rigorous
+	the analogy between homotopies and natural transformations. Both the categories
+$\cat{Cat}$ and $\cat{Top}$ secretly hold the structure of a \emph{bicategory},
+and the fundamental groupoid is an example of a
 
 \bibliographystyle{alpha}
 \bibliography{references}

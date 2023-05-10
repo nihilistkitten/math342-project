@@ -278,11 +278,25 @@
 		\end{tikzpicture}
 	\end{adjustbox}
 
-	\uncover<5->{Some dots and arrows between them?? That sounds like..}
+	\uncover<5->{If you relax the requirement that paths in the fundamental group
+		are loops, you get \emph{the fundamental groupoid} $\Pi_1$.}
+\end{frame}
 
-	\uncover<6->{a category!}
+\begin{frame}[fragile]
+	\frametitle{Weak Equivalences: A Teaser}
 
-	\uncover<7->{If you relax the requirement that paths in the fundamental group
-		are loops, you get \emph{the fundamental groupoid}.}
+	\pause
+
+	\begin{itemize}
+		\item Is the fundamental groupoid a homotopy invariant? By the most obvious
+		      notion of groupoid isomorphism, \textbf{no}. \pause
+		\item The problem is that there are many more points in $D^n$ than $\{*\}$,
+		      hence many more objects in $\Pi_1(D^n)$ than $\Pi_1(\{*\})$. \pause
+		\item The naive notion of isomorphism is too strong: we need a kind of weak
+		      equivalence, much like homotopy for topological spaces, for
+		      categories. \pause
+		\item This line of thought naturally leads to "higher categories", with
+		      morphisms between morphisms, etc.
+	\end{itemize}
 \end{frame}
 \end{document}
