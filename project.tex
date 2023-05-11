@@ -197,7 +197,10 @@
 
 
 \begin{abstract}
-	% TODO: abstract
+	We introduce basic category theory and construct the fundamental groupoid of a
+	topological space. Using homotopy as an analogy, we define natural
+	transformations and equivalence of categories. We conclude with the
+	homotopy invariance of the fundamental groupoid.
 \end{abstract}
 
 
@@ -205,11 +208,22 @@
 
 \section{Introduction}
 
-% TODO: introduction
+The fundamental groupoid is a generalization of the better-known fundamental
+group which captures information of the entire space, instead of just a single
+basepoint. It naturally emerges when one considers the categorification of a
+group. However, the fundamental groupoid is in some sense not a strict homotopy
+invariant: the disk and the point have non-isomorphic fundamental groupoids!
+
+Instead, the correct notion of equivalence on groupoids relies on a notion
+called equivalence of categories. The line of thinking which leads to this
+definition draws heavy analogies between topological spaces and categories.
+Equivalence of categories turns out to be closely related to the familiar notion
+of homotopy equivalence.
 
 After introducing some basic category theory in \Cref{categories}, we construct
 the fundamental groupoid in \Cref{the fundamental groupoid}. This motivates
-natural transformations in \Cref{natural transformations}.
+natural transformations in \Cref{natural transformations}, culminating in a
+proof of the homotopy invariance of the fundamental groupoid.
 
 \section{Categorical Preliminaries}\label{categories}
 
@@ -709,8 +723,8 @@ the underlying geometry of the space. More immediately, however, this view
 strongly suggests that when we take all the path classes from our underlying space,
 we should get back a groupoid.
 
-\begin{defn}[Fundamental Groupoid]
-	The \textit{fundamental groupoid} $\Pi_1X$ of a space $X$ is the category
+\begin{defn}
+	The \emph{fundamental groupoid} $\Pi_1X$ of a space $X$ is the category
 	whose objects are the points of $X$ and whose morphisms are the path homotopy
 	classes of paths in $X$.
 \end{defn}
@@ -781,16 +795,16 @@ Accordingly, we define
 This mapping is well-defined because composition preserves homotopy equivalence.
 
 \begin{prop}\label{fundamental groupoid is a functor}
-	The fundamental groupoid $\Pi_1$ is a functor.
+	The fundamental groupoid is a functor.
 \end{prop}
 
 \begin{proof}
-	Again, much of this work was done in class.
-	\begin{itemize}
-		\item It respects composition, since composition is associative.
-		\item It respects identities, since composing the identity fixes homotopy classes. \qedhere
-	\end{itemize}
-	% TODO: spell this out more
+	Let $X\xrightarrow{f}Y\xrightarrow{g}Z$ be spaces and continuous maps. Let
+	$\gamma$ be a path in $X$.
+
+	We have $$\Pi_1g\Pi_1f([\gamma]) = \Pi_1g([f\circ\gamma]) = [g\circ f\circ\gamma] = \Pi_1(gf)[\gamma]$$
+	and $$\Pi_11_X([\gamma]) = [1_X\circ\gamma] = [\gamma] = 1_{\Pi_1X}([\gamma]).$$
+	Thus $\Pi_1$ is compatible with composition and identities, as desired.\qedhere
 \end{proof}
 
 This result is an improvement over the fundamental group, where we needed a
@@ -1012,7 +1026,7 @@ Since we are primarily concerned with the special case of groupoids, in which
 		G$.
 \end{defn}
 
-\begin{rem}
+\begin{rem}\label{groupoid natural isormorphism}
 	Any natural transformation between functors into a groupoid is a natural
 	isomorphism.
 \end{rem}
@@ -1080,7 +1094,7 @@ homotopy equivalence, defined in \Cref{sec:homotopy}. As such:
 	isomorphism identically gives the symmetric result.
 \end{proof}
 
-\subsection{The Fundamental Groupoid, Redux}
+\subsection{Groupoids, Redux}
 
 Finally, we can apply our new technology to show the isomorphism of
 path-connected fundamental groups and the homotopy invariance of the fundamental
@@ -1154,14 +1168,72 @@ $\cat{C}(x, x)$ together with the composition structure.
 		isomorphic}.
 \end{proof}
 
-Finally, with a more general equivalence on categories, hence also groupoids, in
-hand, our final objective is the homotopy invariance of the fundamental
-groupoid up to equivalence.
+With a more general equivalence on categories, hence also groupoids, in hand,
+our final objective is the homotopy invariance of the fundamental groupoid up to
+equivalence.
 
 \begin{lemma}
 	Let $f,g: X\rightarrow Y$ be continuous. If $f\simeq g$, then
 	$\Pi_1f\cong\Pi_1g$.
 \end{lemma}
+
+\begin{proof}\cite[Proposition 13]{Higgins}
+	Let $H: X\times I\rightarrow Y$ be a homotopy. By \Cref{groupoid natural
+		isormorphism}, it suffices to give a natural transformation $\alpha:
+		\Pi_1f\nat\Pi_1g$, whose components, $\alpha_x$, are morphisms in $\Pi_1Y$,
+	hence path classes in $Y$, with start and endpoints at $f(x)$ and $g(x)$,
+	respectively. We will set $\alpha_x = [H(x, -)]$.
+
+	Let $\gamma$ be a path in $X$. Naturality asserts commutativity of the
+	following square:
+	\begin{figure}[H]
+		\centering
+		\begin{tikzcd}
+			f(x) & g(x) \\
+			f(y) & g(y)
+			\arrow["{[f\circ\gamma]}", from=1-1, to=2-1, swap]
+			\arrow["{[H(x, -)]}", from=1-1, to=1-2]
+			\arrow["{[H(y, -)]}", from=2-1, to=2-2, swap]
+			\arrow["{[g\circ\gamma]}"', from=1-2, to=2-2, swap]
+			\punctuation{.}
+		\end{tikzcd}
+	\end{figure}
+	This amounts to giving a path homotopy $$ (f\circ\gamma) * H(y, -) \simeq_p H(x,
+		-) * (g\circ\gamma).$$
+
+	To construct our homotopy, we glue together the following $2$-cells:
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[>=latex]
+			\draw (0, 0) node {}
+			-- (0, 3) node {}
+			-- (3, 3) node {}
+			-- cycle;
+			\draw (1.5, 3.3) node {$H(x, t)$};
+			\draw (-0.5, 1.5) node {$f(x)$};
+			\draw (1.0, 2.0) node {$H(x, t)$};
+			\draw (2.0, 1.0) node {$H(x, t)$};
+
+			\draw (5,0) rectangle (8, 3);
+			\draw (4.3, 1.5) node {$H(x, t)$};
+			\draw (8.7, 1.5) node {$H(y, t)$};
+			\draw (6.5, 1.5) node {$H(\gamma(s), t)$};
+			\draw (6.5, 3.3) node {$g\circ\gamma$};
+			\draw (6.5, -0.3) node {$f\circ\gamma$};
+
+			\draw (13, 3) node {}
+			-- (10, 0) node {}
+			-- (13, 0) node {}
+			-- cycle;
+			\draw (11.5, -0.3) node {$H(y, t)$\punctuation{.}};
+			\draw (13.5, 1.5) node {$g(y)$};
+			\draw (11.0, 2.0) node {$H(y, t)$};
+			\draw (12.0, 1.0) node {$H(y, t)$};
+		\end{tikzpicture}
+	\end{figure}
+	This gives precisely the desired homotopy.
+\end{proof}
+
 
 \begin{thm}
 	Let $X\simeq Y$. Then $\Pi_1X\simeq \Pi_1Y$.
@@ -1177,15 +1249,76 @@ groupoid up to equivalence.
 	direction follows by symmetry of the situation.
 \end{proof}
 
+\section{Higher Categories, Briefly}
 
-\section{2-Categories}
+The analogy we've drawn between homotopies and natural transformation can be
+made rigorous in several ways. Here we sketch a few, and discuss advantages and
+disadvantages of each. The main objective is to generalize categories to allow
+morphisms between morphisms, like homotopies in $\cat{Top}$ and natural
+transformations in $\cat{Cat}$. Here I largely follow \cite{Leinster}.
 
-One can show this straightforwardly. Instead, we will do so by making rigorous
-the analogy between homotopies and natural transformations. Both the categories
-$\cat{Cat}$ and $\cat{Top}$ secretly hold the structure of a \emph{bicategory},
-and the fundamental groupoid is an example of a
+Our general issue will be that homotopies only associate up to homotopy. Our
+concern, as we will quickly see, will be to find a convenient weakening of
+associativity which accommodates homotopy.
+
+\subsection{Strict n-categories}
+
+Probably the most straightforward way to accomplish this is strict
+$2$-categories. Note that in an ordinary (locally small) category, the morphisms
+$\cat{C}(x, y)$ form a set for any pair of objects. In many settings, we can say
+something stronger: recall, for instance, that the set of linear transformations
+$\cL(V, W)$ between any two vector spaces is itself a vector space.
+
+\begin{defn}
+	Let $\cat{K}$ be a category. A \emph{category enriched over $\cat{K}$} is a
+	category such that for any two objects $x,y\in\Obj{C}$, $\cat{C}(x, y)$ is an
+	object in $\cat{K}$.
+\end{defn}
+
+We also need to require an additional structure on composition, essentially so
+that it is compatible with $\cat{K}$. To do this we need a way to product two
+objects in $\cat{K}$, so we can define composition as a morphism $\cat{C}(x,
+	y)\otimes\cat{C}(y, z)\rightarrow\cat{C}(x, z)$; for example, one uses the
+tensor product in $\cat{Vect}_\Bbbk$. The general way to do this is to insist that
+$\cat{K}$ be \emph{monoidal}.
+
+\begin{defn}
+	A \emph{strict 2-category} is a category enriched over $\cat{Cat}$.
+\end{defn}
+
+One can show that there is a 2-category of 1-categories, $\cat{1Cat}$, where the
+categorical structure on morphisms is given by vertical composition. In that
+case, horizontal composition together with the ordinary product category is
+exactly the right gadget needed to make the monoidal structure work.
+
+One can keep going:
+
+\begin{defn} A \emph{0-category} is a set. An \emph{(n+1)-category} is a category
+	enriched over $\cat{nCat}$, the category of all $n$-categories.
+\end{defn}
+
+What to do about $\cat{Top}$? We could take homotopy classes of homotopies as
+our 2-cells. In fact for spaces $X$ and $Y$, there is a category of continuous
+functions $X\rightarrow Y$ and homotopy classes of homotopies between those
+functions.
+
+This approach will break down quickly. Informally, either our $3$-cell structure
+will have to be trivial, since we would be asking for homotopies between
+homotopy classes, or we will have to sacrifice associativity for $2$-cells and
+therefore no longer be a strict $n$-category.
+
+\subsection{Bicategories}
+
+A bicategory is probably the easiest way to define a weak 2-category.
+
+\begin{defn}
+	A \emph{bicategory} consists of \emph{0-cells}, \emph{1-cells}, and
+	\emph{2-cells}, with the appropriate domains, codomains,
+\end{defn}
+
 
 \bibliographystyle{alpha}
 \bibliography{references}
 
+\end{document}
 \end{document}
