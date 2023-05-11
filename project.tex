@@ -200,7 +200,8 @@
 	We introduce basic category theory and construct the fundamental groupoid of a
 	topological space. Using homotopy as an analogy, we define natural
 	transformations and equivalence of categories. We conclude with the
-	homotopy invariance of the fundamental groupoid.
+	homotopy invariance of the fundamental groupoid and a sketch of strict
+	2-categories.
 \end{abstract}
 
 
@@ -210,20 +211,23 @@
 
 The fundamental groupoid is a generalization of the better-known fundamental
 group which captures information of the entire space, instead of just a single
-basepoint. It naturally emerges when one considers the categorification of a
-group. However, the fundamental groupoid is in some sense not a strict homotopy
-invariant: the disk and the point have non-isomorphic fundamental groupoids!
+basepoint. It naturally emerges when one considers generalizing the
+categorification of a group. However, the fundamental groupoid is in some sense
+not a strict homotopy invariant: the disk and the point have non-isomorphic
+fundamental groupoids!
 
 Instead, the correct notion of equivalence on groupoids relies on a notion
 called equivalence of categories. The line of thinking which leads to this
 definition draws heavy analogies between topological spaces and categories.
 Equivalence of categories turns out to be closely related to the familiar notion
-of homotopy equivalence.
+of homotopy equivalence. These connections are made rigorous by higher category
+theory.
 
 After introducing some basic category theory in \Cref{categories}, we construct
 the fundamental groupoid in \Cref{the fundamental groupoid}. This motivates
 natural transformations in \Cref{natural transformations}, culminating in a
-proof of the homotopy invariance of the fundamental groupoid.
+proof of the homotopy invariance of the fundamental groupoid. We conclude in
+\Cref{2 categories} with a brief discussion of 2-categories.
 
 \section{Categorical Preliminaries}\label{categories}
 
@@ -1002,7 +1006,7 @@ We can compose natural transformation in two ways.
 	\emph{horizontal composite}.
 \end{notn}
 
-\begin{rem}
+\begin{rem}\label{two compositions}
 	There are two ways to compose homotopies: when they share a common function,
 	and when they are between composition-compatible functions. There are two ways
 	to compose natural transformations: when they share a common functor, and when
@@ -1172,7 +1176,7 @@ With a more general equivalence on categories, hence also groupoids, in hand,
 our final objective is the homotopy invariance of the fundamental groupoid up to
 equivalence.
 
-\begin{lemma}
+\begin{lemma}\label{pseudofunctor}
 	Let $f,g: X\rightarrow Y$ be continuous. If $f\simeq g$, then
 	$\Pi_1f\cong\Pi_1g$.
 \end{lemma}
@@ -1235,7 +1239,7 @@ equivalence.
 \end{proof}
 
 
-\begin{thm}
+\begin{thm}\label{homotopy invariance}
 	Let $X\simeq Y$. Then $\Pi_1X\simeq \Pi_1Y$.
 \end{thm}
 
@@ -1249,72 +1253,175 @@ equivalence.
 	direction follows by symmetry of the situation.
 \end{proof}
 
-\section{Higher Categories, Briefly}
+\section{2-Categories, Briefly}
+\label{2 categories}
 
 The analogy we've drawn between homotopies and natural transformation can be
-made rigorous in several ways. Here we sketch a few, and discuss advantages and
-disadvantages of each. The main objective is to generalize categories to allow
-morphisms between morphisms, like homotopies in $\cat{Top}$ and natural
-transformations in $\cat{Cat}$. Here I largely follow \cite{Leinster}.
+made rigorous in several ways. Here we sketch maybe the easiest, and discuss its
+limitations. The main objective is to generalize categories to allow morphisms
+between morphisms, like homotopies in $\cat{Top}$ and natural transformations in
+$\cat{Cat}$. I largely follow \cite[Chapter 1]{Leinster}.
 
-Our general issue will be that homotopies only associate up to homotopy. Our
-concern, as we will quickly see, will be to find a convenient weakening of
-associativity which accommodates homotopy.
+Note that in an ordinary (locally small) category, the morphisms $\cat{C}(x, y)$
+form a set for any pair of objects. In many settings, we can say something
+stronger: recall, for instance, that the set of linear transformations $\cL(V,
+	W)$ between any two vector spaces is itself a vector space. This is called
+\emph{enrichment} over $\cat{Vect}_\Bbbk$.
 
-\subsection{Strict n-categories}
-
-Probably the most straightforward way to accomplish this is strict
-$2$-categories. Note that in an ordinary (locally small) category, the morphisms
-$\cat{C}(x, y)$ form a set for any pair of objects. In many settings, we can say
-something stronger: recall, for instance, that the set of linear transformations
-$\cL(V, W)$ between any two vector spaces is itself a vector space.
-
-\begin{defn}
-	Let $\cat{K}$ be a category. A \emph{category enriched over $\cat{K}$} is a
-	category such that for any two objects $x,y\in\Obj{C}$, $\cat{C}(x, y)$ is an
-	object in $\cat{K}$.
-\end{defn}
-
-We also need to require an additional structure on composition, essentially so
-that it is compatible with $\cat{K}$. To do this we need a way to product two
-objects in $\cat{K}$, so we can define composition as a morphism $\cat{C}(x,
-	y)\otimes\cat{C}(y, z)\rightarrow\cat{C}(x, z)$; for example, one uses the
-tensor product in $\cat{Vect}_\Bbbk$. The general way to do this is to insist that
-$\cat{K}$ be \emph{monoidal}.
+We can't enrich with every category, at least not if we want the resultant
+structure to be interesting. Say we want to enrich over the category $\cat{K}$.
+Presumably, we want composition to capture the internal structure of $\cat{K}$.
+The easiest way to ensure this is to ask that $\cat{K}$ have a kind of internal
+product, which will allow us to define composition.
 
 \begin{defn}
-	A \emph{strict 2-category} is a category enriched over $\cat{Cat}$.
+	A \emph{monoidal category} consists of a category $\cat{K}$, a functor
+	$\otimes: \cat{K}\times\cat{K}\rightarrow\cat{K}$ called the \emph{tensor
+		product}, an object $1_\otimes\in A$ called the \emph{tensor unit}, and natural
+	isomorphisms
+	$$\alpha_{x,y,z}: (x\otimes y)\otimes z\simeq x\otimes(y\otimes z),\quad
+		\lambda_x: 1_\otimes\otimes x\simeq x,\quad \rho_x: x\otimes1_\otimes\simeq xm$$
+	called the \emph{coherence isomorphisms}.
+
+	This data must satisfy the \emph{triangle} and \emph{pentagon} identities:
+
+	\begin{figure}[H]
+		\centering
+		\begin{tikzcd}
+			(x\otimes 1_\otimes)\otimes y & & x\otimes(1_\otimes\otimes y) \\
+			& x\otimes y &
+			\arrow["\alpha_{x,1_\otimes,y}", from=1-1, to=1-3]
+			\arrow["\rho_x", from=1-1, to=2-2, swap]
+			\arrow["\lambda_x", from=1-3, to=2-2]
+		\end{tikzcd}
+		\begin{tikzcd}
+			& (x\otimes y)\otimes(z\otimes w) & \\
+			((x\otimes y)\otimes z)\otimes w & & x\otimes (y\otimes (z\otimes w)) \\
+			(x\otimes (y\otimes z))\otimes w & & x\otimes ((y\otimes z)\otimes w)\punctuation{.}
+			\arrow["\alpha_{x\otimes y, z, w}", from=2-1, to=1-2]
+			\arrow["\alpha_{x, y, z\otimes w}", from=1-2, to=2-3]
+			\arrow["\alpha_{x, y, z}\otimes 1_w", from=2-1, to=3-1, swap]
+			\arrow["1_x\otimes\alpha_{y, z, w}", from=3-3, to=2-3, swap]
+			\arrow["\alpha_{x, y\otimes z, w}", from=3-1, to=3-3, swap]
+		\end{tikzcd}
+	\end{figure}
+
+	Asking for uniqueness (as opposed to isomorphism) of associates turns out to be
+	too much, but these identities ask just that the composite coherence
+	isomorphisms are unique.
 \end{defn}
 
-One can show that there is a 2-category of 1-categories, $\cat{1Cat}$, where the
-categorical structure on morphisms is given by vertical composition. In that
-case, horizontal composition together with the ordinary product category is
-exactly the right gadget needed to make the monoidal structure work.
+\begin{ex}
+	One can check that $\cat{Vect}_\Bbbk$, $\cat{Set}$, and $\cat{Cat}$ each have
+	monoidal structure, with the (vector space) tensor, the Cartesian product, and
+	the product category, respectively. These examples show why we can only ask
+	for isomorphism of identities and associates: the one-element set is not
+	exactly its own Cartesian product, but it is isomorphic to it.
+\end{ex}
 
-One can keep going:
+
+\begin{defn}\label{enrichment}
+	Let $\cat{K}$ be a monoidal category. A \emph{category enriched over
+		$\cat{K}$}, $\cat{C}$, consists of
+	\begin{itemize}
+		\item A collection of objects.
+		\item For each pair of objects $x,y$, an object $\cat{C}(x, y)$ in
+		      $\cat{K}$.
+		\item For each triple of objects $x,y,z$, a morphism $\circ_{x, y, z}\cat{C}(y,
+			      z)\otimes\cat{C}(x, y)\rightarrow\cat{C}(x, z)$, called composition.
+		\item For each object $x$, a morphism $1_x: 1_\otimes\rightarrow C(x, x)$, called the
+		      identity morphism.
+	\end{itemize}
+
+	This data must satisfy certain \emph{associative} and \emph{unital} laws:
+
+	\begin{figure}[H]
+		\centering
+		\begin{tikzcd}
+			(\cat{C}(z, w)\otimes\cat{C}(y,z))\otimes\cat{C}(x, y)
+			& & \cat{C}(z, w)\otimes(\cat{C}(y,z)\otimes\cat{C}(x, y)) \\
+			\cat{C}(y, w)\otimes\cat{C}(x, y)
+			& \cat{C}(x, y)
+			& \cat{C}(z, w)\otimes(\cat{C}(x, z)) \\
+			\arrow["\alpha_{\cat{C}(z, w),\cat{C}(y,z),\cat{C}(x, y)}", from=1-1, to=1-3]
+			\arrow["\circ_{y, z, w}\otimes1_{\cat{C}(x, y)}", from=1-1, to=2-1, swap]
+			\arrow["1_{\cat{C}(z, w)}\otimes\circ_{x, y, z}", from=1-3, to=2-3]
+			\arrow["\circ_{x, y, w}", from=2-1, to=2-2, swap]
+			\arrow["\circ_{x, z, w}", from=2-3, to=2-2]
+		\end{tikzcd}
+		\begin{tikzcd}
+			\cat{C}(y, y)\otimes\cat{C}(x, y) & \cat{C}(x, y) & \cat{C}(x, y)\otimes\cat{C}(x, x) \\
+			1_\otimes\otimes\cat{C}(x, y) & & \cat{C}(x, y)\otimes 1_\otimes
+			\arrow["\circ_{x, y, y}", from=1-1, to=1-2]
+			\arrow["\circ_{x, x, y}", from=1-3, to=1-2, swap]
+			\arrow["1_y\otimes1_{\cat{C}(x, y)}", from=2-1, to=1-1]
+			\arrow["\lambda_{C(x, y)}", from=2-1, to=1-2, swap]
+			\arrow["\rho_{C(x, y)}", from=2-3, to=1-2]
+			\arrow["1_{\cat{C}(x, y)}\times1_x", from=2-3, to=1-3, swap]
+		\end{tikzcd}
+	\end{figure}
+
+	These laws guarantee that composites and identities work as expected.
+\end{defn}
+
+\begin{ex}We have two examples so far:
+	\begin{itemize}
+		\item A locally small category is a category enriched over $\cat{Set}$ (with
+		      the Cartesian product).
+		\item $\cat{Vect}_\Bbbk$ can be viewed as a category enriched over itself.
+	\end{itemize}
+\end{ex}
+
+We can now define our main object:
+
+\begin{defn}\label{2-category}	A \emph{strict 2-category} is\footnote{There is also an axiomatization of
+		2-categories which requires less machinery and simply lists out all the axioms
+		for 0-, 1-, and 2-cells deducible from \Cref{2-category}. See e.g. \cite[Section
+			1.7]{Riehl}.} a category enriched over $\cat{Cat}$.
+\end{defn}
+
+\begin{ex}
+	There is a 2-category of 1-categories, $\cat{1Cat}$, where the categorical
+	structure on morphisms is given by vertical composition of natural
+	transformations. In that case, horizontal composition gives exactly the right
+	gadget to make the monoidal structure work.
+\end{ex}
+
+We can keep going:
 
 \begin{defn} A \emph{0-category} is a set. An \emph{(n+1)-category} is a category
 	enriched over $\cat{nCat}$, the category of all $n$-categories.
 \end{defn}
 
-What to do about $\cat{Top}$? We could take homotopy classes of homotopies as
-our 2-cells. In fact for spaces $X$ and $Y$, there is a category of continuous
-functions $X\rightarrow Y$ and homotopy classes of homotopies between those
-functions.
+To make the analogy between homotopies and natural transformations rigorous, we
+would like to assemble spaces, continuous maps, and homotopies into a
+2-category. However, we run into issues with associativity, since homotopies
+only associate up to homotopy.
 
-This approach will break down quickly. Informally, either our $3$-cell structure
-will have to be trivial, since we would be asking for homotopies between
-homotopy classes, or we will have to sacrifice associativity for $2$-cells and
-therefore no longer be a strict $n$-category.
+One way to fix associativity is to take homotopy classes of homotopies as our
+2-cells. In fact, there is a strict 2-category of spaces, continuous functions,
+and homotopy classes of homotopies. Many of the similarities between homotopy
+and natural transformation we've observed can be studied in this setting. For
+example, \Cref{two compositions} just observes that one has both the composite
+morphisms and composition within the functor categories. In this setting
+\Cref{pseudofunctor}, and its corollary \Cref{homotopy invariance}, have to do
+with the \emph{weak 2-functoriality} of the fundamental groupoid.
 
-\subsection{Bicategories}
+This approach works for the case $n=2$, but it will break down quickly.
+Informally, either our 3-cell structure will have to be trivial, since we would
+be asking for homotopies between homotopy classes, or we will have to sacrifice
+associativity for 2-cells and therefore no longer be a strict 3-category.
+Instead, one can weaken the notion of n-category to obtain weak n-categories, in
+which the associative and unital laws of \Cref{enrichment} are weakened up to,
+for example, appropriate isomorphism of 2-cells. There are several ways to make
+this precise, which we won't sketch; see \cite{Leinster}.
 
-A bicategory is probably the easiest way to define a weak 2-category.
 
-\begin{defn}
-	A \emph{bicategory} consists of \emph{0-cells}, \emph{1-cells}, and
-	\emph{2-cells}, with the appropriate domains, codomains,
-\end{defn}
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}
+\end{document}
 
 
 \bibliographystyle{alpha}
